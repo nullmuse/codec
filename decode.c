@@ -8,7 +8,6 @@
 int main(int argc, char *argv[]) { 
 
 char *pdata; 
-int i,size; 
 psy_data *psy; 
 
 if(argc == 1) {
@@ -24,9 +23,9 @@ if (pdata == NULL) {
 
 psy = transmute_header(pdata); 
 
-printf("psy->version = %i\npsy->length = %i\n",psy->version,psy->length); 
-printf("psy->source_id = %i\npsy->dest_id = %i\n",psy->source_id,psy->dest_id);
-
+printf("psy->version = %x\npsy->length = %x\n",(psy->version >> 12)& 0xFFFF,psy->length); 
+printf("psy->source_id =%u\npsy->dest_id=%u\n",psy->source_id,psy->dest_id);
+printf("psy->sequence = %x\n",psy->sequence); 
 
 
 
