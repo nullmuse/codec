@@ -1,9 +1,22 @@
-const int OP_SUCCESS = 0;
-const int OP_FAIL = 1; 
+static const int OFF_LEN = 75; 
+static const int OFF_VERT = 78; 
+static const int OFF_SEQ = 81;
+static const int OFF_SID = 82;
+static const int OFF_DID = 84; 
+static const int OFF_PAY = 89; 
 
-const int HEADER_SIZE = 4; 
 
-char psychic_header[5] = {(char)0xd4,(char)0xc3,(char)0xb2,(char)0xa1,(char)0x00};
+typedef struct { 
+int version;   
+int length; 
+int dest_id; 
+int source_id; 
+int sequence; 
+char *payload; 
+} psy_data;
+
+ 
+
 
 
 

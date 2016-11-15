@@ -1,8 +1,8 @@
 CFLAGS = -Wall -Wextra -pedantic
-D_OBJS = cdecode.o cfile.o
+D_OBJS = decode.o cfile.o archon.o
 
 all: decode
 
-decode:$(D_OBJS)
-	$(CC) $(CFLAGS) $(D_OBJS) -o decode
+decode: $(D_OBJS)
+	$(CC) $(D_OBJS) -o decode
 
