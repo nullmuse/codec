@@ -3,8 +3,6 @@
 #include <sys/stat.h> 
 #include "codelib.h" 
 
-
-
 int main(int argc, char *argv[]) { 
 
 char *pdata = NULL; 
@@ -29,7 +27,26 @@ printf("psy source ID: %i\n",psy->source_id);
 printf("psy destination ID: %i\n",psy->dest_id);
 printf("psy sequence number: %i\n",psy->sequence);
 
+switch(psy->type) {
 
+case ZERG_MESSAGE:
+   read_psy_message(psy);
+   break;
+case ZERG_STATUS:
+   read_psy_status(psy);
+   break;
+case ZERG_COMMAND:
+   read_psy_command(psy);
+   break;
+case ZERG_GPS:
+   read_psy_gps(psy);
+   break;
+
+default:
+   printf("Unrecognized/non-Zerg psionic capture stream.\n"); 
+   printf("Use Zerg psionic capture stream or recalibrate psi receiver\n"); 
+   break; 
+}
 
 RETURN:
 if(pdata != NULL)

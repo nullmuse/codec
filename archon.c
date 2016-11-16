@@ -7,22 +7,6 @@
 
 
 
-int decouple_psydata(int byte, int data) { 
-
-int ret = 0; 
-switch(data) { 
-
-case 0:
-ret = (byte >> 12)& 0xFFFF; 
-break; 
-
-} 
-return ret; 
-
-
-} 
-
-
 psy_data *transmute_header(char *pdata) {
 
 type_ver *tv = calloc(1,sizeof(type_ver)); 
@@ -43,4 +27,15 @@ return psy;
 
 
 }
+
+void read_psy_message(psy_data *psy) { return; }
+
+void read_psy_status(psy_data *psy) { return; } 
+
+void read_psy_command(psy_data *psy) { return; }
+
+void read_psy_gps(psy_data *psy) { return; } 
+
+
+
 
