@@ -20,13 +20,6 @@ if (pdata == NULL) {
 
 psy = transmute_header(pdata); 
 
-printf("psy version: %i\n",psy->version); 
-printf("psy type: %i\n",psy->type);
-printf("psy length: %i\n",psy->length);
-printf("psy source ID: %i\n",psy->source_id);
-printf("psy destination ID: %i\n",psy->dest_id);
-printf("psy sequence number: %i\n",psy->sequence);
-
 switch(psy->type) {
 
 case ZERG_MESSAGE:
@@ -51,6 +44,8 @@ default:
 RETURN:
 if(pdata != NULL)
 free(pdata);
+if(psy != NULL)
+free(psy);
 return 0; 
 
 } 

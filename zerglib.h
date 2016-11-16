@@ -2,7 +2,7 @@
 #define ZERG_STATUS  1
 #define ZERG_COMMAND  2
 #define ZERG_GPS  3
-
+#define PSYHDR_SZ 12
 
 
 static const int OFF_LEN = 81; 
@@ -10,7 +10,7 @@ static const int OFF_VERT = 78;
 static const int OFF_SEQ = 89;
 static const int OFF_SID = 82;
 static const int OFF_DID = 84; 
-static const int OFF_PAY = 89; 
+static const int OFF_PAY = 90; 
 
 
 typedef struct { 

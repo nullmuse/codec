@@ -34,7 +34,6 @@ fread(pcheck,sizeof(char),HEADER_SIZE,fp);
 
 if(!strncmp(pcheck,psychic_header,HEADER_SIZE)) { 
 ret = OP_SUCCESS; 
-printf("File is valid\n"); 
 }
 
 free(pcheck); 
