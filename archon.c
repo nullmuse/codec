@@ -111,6 +111,7 @@ return;
 void read_psy_command(psy_data *psy) { 
 
 int command; 
+int repseq; 
 float bearing;
 int bearint;  
 int meters; 
@@ -184,6 +185,16 @@ STOP\n\
 ",psy->version,psy->sequence,psy->source_id,psy->dest_id);
    break;
 case REPEAT:
+memcpy(&repseq,&psy->payload[COMM_PARAM2],sizeof(int));
+repseq = byte_ritual(repseq); 
+printf("\
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+REPEAT\n\
+Repeat Sequence:%i\n\
+",psy->version,psy->sequence,psy->source_id,psy->dest_id,repseq);
    break;
 default:
    printf("Unrecognized command in command packet\n"); 
