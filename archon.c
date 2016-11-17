@@ -7,6 +7,35 @@
 
 
 
+float float_ritual(int object) { 
+
+asm(".intel_syntax noprefix");
+asm("fld DWORD PTR [rbp-0x4]");
+asm("fst DWORD PTR [rbp-0x32]"); 
+asm("movd xmm0, DWORD PTR [rbp-0x32]");
+asm("pop rbp");
+asm("ret");
+asm(".att_syntax noprefix");
+return;
+}
+
+int byte_ritual(int object) {
+asm(".intel_syntax noprefix");
+asm("mov eax, DWORD PTR [rbp-0x4]");
+asm("xchg ah, al");
+asm("ror eax, 16");
+asm("xchg ah, al");  
+asm("pop rbp");
+asm("ret");
+asm(".att_syntax noprefix");
+return;
+}
+ 
+
+
+
+
+
 psy_data *transmute_header(char *pdata) {
 
 type_ver *tv = calloc(1,sizeof(type_ver)); 
@@ -28,6 +57,7 @@ return psy;
 
 }
 
+
 void read_psy_message(psy_data *psy) { 
 
 int message_size; 
@@ -47,7 +77,40 @@ free(message);
 return;
 }
 
-void read_psy_status(psy_data *psy) { return; } 
+void read_psy_status(psy_data *psy) { 
+
+int max_hp,ac,type;
+int spp;
+int hp; 
+FILE *fp;
+float sp;
+unsigned int pls = 1;
+char *name;
+hp = psy->payload[STAT_HP];
+ac = htons(psy->payload[STAT_AC]);
+max_hp = psy->payload[STAT_HP_MAX];
+type = psy->payload[STAT_TYPE];
+memcpy(&spp,&psy->payload[STAT_SP],sizeof(int));
+spp = byte_ritual(spp); 
+sp = float_ritual(spp);
+name = &psy->payload[STAT_NAME];
+printf("\
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+Name:%s\n\
+HP:%i/%i\n\
+Type:%s\n\
+Armor:%i\n\
+MaxSpeed:%fm/s\n\
+",psy->version,psy->sequence,psy->source_id,psy->dest_id,name,hp,max_hp,zerg_breeds[type],ac,sp);
+
+
+
+return; 
+
+} 
 
 void read_psy_command(psy_data *psy) { return; }
 

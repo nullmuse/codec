@@ -12,6 +12,12 @@ static const int OFF_SID = 82;
 static const int OFF_DID = 84; 
 static const int OFF_PAY = 90; 
 
+static const int STAT_HP = 2; 
+static const int STAT_AC = 3; 
+static const int STAT_HP_MAX = 6;
+static const int STAT_TYPE = 7; 
+static const int STAT_SP = 8;
+static const int STAT_NAME = 12; 
 
 typedef struct { 
 short version;
@@ -27,6 +33,25 @@ typedef struct {
 unsigned short t_type:4;
 unsigned short t_ver:4;
 } type_ver;  
+
+static const char *zerg_breeds[] = {
+"Overmind",
+"Larva",
+"Cerebrate",
+"Overlord",
+"Queen",
+"Drone",
+"Zergling",
+"Lurker",
+"Broodling",
+"Hydralisk",
+"Guardian",
+"Scourge",
+"Ultralisk",
+"Mutalisk",
+"Defiler",
+"Devourer"
+}; 
 
 
 
