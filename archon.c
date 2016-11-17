@@ -255,28 +255,57 @@ return;
 
 
 void read_psy_gps(psy_data *psy) { 
-
+char ns,we; 
 double flat,flong;
+float falt,fbear,fsp,fac;
+unsigned int alt_i,bear_i,sp_i,ac_i; 
 unsigned long lat_l, long_l; 
-FILE *fp; 
 memcpy(&long_l,&psy->payload[GPS_LONG],sizeof(double)); 
 memcpy(&lat_l,&psy->payload[GPS_LAT],sizeof(double));
-printf("long:%lu lat:%lu\n",long_l,lat_l);
-fp = fopen("stest","wb");   
+memcpy(&alt_i,&psy->payload[GPS_ALT],sizeof(int));
+memcpy(&bear_i,&psy->payload[GPS_BEAR],sizeof(int));
+memcpy(&sp_i,&psy->payload[GPS_SP],sizeof(int));
+memcpy(&ac_i,&psy->payload[GPS_ACC],sizeof(int));
 lat_l =long_ritual(lat_l); 
 long_l = long_ritual(long_l); 
-printf("long:%lu lat:%lu\n",long_l,lat_l);
+alt_i = byte_ritual(alt_i);
+bear_i = byte_ritual(bear_i);
+sp_i = byte_ritual(sp_i);
+ac_i = byte_ritual(ac_i);
 flat = double_ritual(lat_l); 
 flong = double_ritual(long_l);
+falt = float_ritual(alt_i);
+fbear = float_ritual(bear_i);
+fsp = float_ritual(sp_i); 
+fac = float_ritual(ac_i);  
+if(flong < 0.0) { 
+we = 'W';
+flong *= -1; 
+}
+else if(flong >= 0.0) {
+we = 'E'; 
+}
+if(flat < 0.0) { 
+ns = 'S';
+flat *= -1; 
+}
+else if(flat >= 0.0) { 
+ns = 'N'; 
+}
+
 printf("\
 Version: %i\n\
 Sequence: %i\n\
 From: %i\n\
 To: %i\n\
 GPS\n\
-Lat:%2.9f\n\
-Long:%2.9f\n\
-",psy->version,psy->sequence,psy->source_id,psy->dest_id,flat,flong);
+Latitude: %2.9f deg. %c\n\
+Longitude: %2.9f deg. %c\n\
+Altitude: %2.1fm\n\
+Bearing: %2.9f deg.\n\
+Speed: %fkm/h\n\
+Accuracy: %fm\n\
+",psy->version,psy->sequence,psy->source_id,psy->dest_id,flat,ns,flong,we,falt,fbear,fsp,fac);
 
 
 

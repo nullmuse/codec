@@ -35,7 +35,10 @@ static const int COMM_PARAM2 = 4;
 
 static const int GPS_LONG = 0; 
 static const int GPS_LAT = 8; 
-
+static const int GPS_ALT = 16;
+static const int GPS_BEAR = 20; 
+static const int GPS_SP = 24; 
+static const int GPS_ACC = 28; 
 
 typedef struct { 
 short version;
