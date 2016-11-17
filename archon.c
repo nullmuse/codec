@@ -115,8 +115,8 @@ int repseq;
 float bearing;
 int bearint;  
 int meters; 
-int group_id; 
-int is_true; 
+int group_id,is_add;  
+char *add_remove[] = {"Remove from","Add to"};
 command = psy->payload[COMM_TYPE]; 
 
 switch(command) { 
@@ -174,6 +174,18 @@ RETURN\n\
 ",psy->version,psy->sequence,psy->source_id,psy->dest_id);
    break; 
 case SET_GROUP:
+memcpy(&group_id,&psy->payload[COMM_PARAM2],sizeof(int)); 
+is_add = psy->payload[COMM_PARAM1];
+group_id = byte_ritual(group_id); 
+printf("\
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+SET GROUP\n\
+%s Group ID:%i\n\
+",psy->version,psy->sequence,psy->source_id,psy->dest_id,add_remove[is_add],group_id);
+
    break; 
 case STOP:
 printf("\
