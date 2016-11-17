@@ -8,29 +8,60 @@
 
 
 float float_ritual(int object) { 
-
-asm(".intel_syntax noprefix");
-asm("fld DWORD PTR [rbp-0x4]");
-asm("fst DWORD PTR [rbp-0x32]"); 
-asm("movd xmm0, DWORD PTR [rbp-0x32]");
-asm("pop rbp");
-asm("ret");
-asm(".att_syntax noprefix");
-return;
+//Below is to make compiler happy
+object = object; 
+__asm__(".intel_syntax noprefix");
+__asm__("fld DWORD PTR [rbp-0x4]");
+__asm__("fst DWORD PTR [rbp-0x32]"); 
+__asm__("movd xmm0, DWORD PTR [rbp-0x32]");
+__asm__("pop rbp");
+__asm__("ret");
+__asm__(".att_syntax noprefix");
+//Below is to make compiler happy
+return object;
 }
+
+double double_ritual(unsigned long object) {
+//Below is to make compiler happy
+object = object; 
+__asm__(".intel_syntax noprefix");
+__asm__("fld QWORD PTR [rbp-0x8]");
+__asm__("fst QWORD PTR [rbp-0x64]");
+__asm__("movq xmm0, QWORD PTR [rbp-0x64]");
+__asm__("pop rbp");
+__asm__("ret");
+__asm__(".att_syntax noprefix");
+//Below is to make compiler happy
+return object; 
+}
+
+
 
 int byte_ritual(int object) {
-asm(".intel_syntax noprefix");
-asm("mov eax, DWORD PTR [rbp-0x4]");
-asm("xchg ah, al");
-asm("ror eax, 16");
-asm("xchg ah, al");  
-asm("pop rbp");
-asm("ret");
-asm(".att_syntax noprefix");
-return;
+//Below is to make compiler happy
+object = object; 
+__asm__(".intel_syntax noprefix");
+__asm__("mov eax, DWORD PTR [rbp-0x4]");
+__asm__("bswap eax");   
+__asm__("pop rbp");
+__asm__("ret");
+__asm__(".att_syntax noprefix");
+//Below is to make compiler happy
+return object; 
 }
  
+unsigned long long_ritual(unsigned long object) {
+//Below is to make compiler happy
+object = object; 
+__asm__(".intel_syntax noprefix");
+__asm__("mov rax, QWORD PTR [rbp-0x8]");
+__asm__("bswap rax");
+__asm__("pop rbp");
+__asm__("ret");
+__asm__(".att_syntax noprefix");
+//Below is to make compiler happy
+return object; 
+}
 
 
 
@@ -117,8 +148,7 @@ int bearint;
 int meters; 
 int group_id,is_add;  
 char *add_remove[] = {"Remove from","Add to"};
-command = psy->payload[COMM_TYPE]; 
-
+command = psy->payload[COMM_TYPE];
 switch(command) { 
 
 case GET_STATUS:
@@ -134,7 +164,8 @@ case GOTO:
 memcpy(&bearint,&psy->payload[COMM_PARAM2],sizeof(int)); 
 bearint = byte_ritual(bearint); 
 bearing = float_ritual(bearint); 
-meters = psy->payload[COMM_PARAM1];
+memcpy(&meters,&psy->payload[COMM_PARAM1],sizeof(short));
+meters = byte_ritual(meters); 
 printf("\
 Version: %i\n\
 Sequence: %i\n\
@@ -223,7 +254,35 @@ return;
 
 
 
-void read_psy_gps(psy_data *psy) { return; } 
+void read_psy_gps(psy_data *psy) { 
+
+double flat,flong;
+unsigned long lat_l, long_l; 
+FILE *fp; 
+memcpy(&long_l,&psy->payload[GPS_LONG],sizeof(double)); 
+memcpy(&lat_l,&psy->payload[GPS_LAT],sizeof(double));
+printf("long:%lu lat:%lu\n",long_l,lat_l);
+fp = fopen("stest","wb");   
+lat_l =long_ritual(lat_l); 
+long_l = long_ritual(long_l); 
+printf("long:%lu lat:%lu\n",long_l,lat_l);
+flat = double_ritual(lat_l); 
+flong = double_ritual(long_l);
+printf("\
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+GPS\n\
+Lat:%2.9f\n\
+Long:%2.9f\n\
+",psy->version,psy->sequence,psy->source_id,psy->dest_id,flat,flong);
+
+
+
+return; 
+
+} 
 
 
 
