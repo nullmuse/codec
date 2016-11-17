@@ -30,7 +30,7 @@ static const int STAT_SP = 8;
 static const int STAT_NAME = 12; 
 
 static const int COMM_TYPE = 1; 
-static const int COMM_PARAM1 = 2; 
+static const int COMM_PARAM1 = 3; 
 static const int COMM_PARAM2 = 4; 
 
 typedef struct { 

@@ -111,8 +111,12 @@ return;
 void read_psy_command(psy_data *psy) { 
 
 int command; 
-
-command = psy->payload[COMM_TYPE + 1]; 
+float bearing;
+int bearint;  
+int meters; 
+int group_id; 
+int is_true; 
+command = psy->payload[COMM_TYPE]; 
 
 switch(command) { 
 
@@ -126,6 +130,20 @@ GET STATUS\n\
 ",psy->version,psy->sequence,psy->source_id,psy->dest_id); 
    break; 
 case GOTO:
+memcpy(&bearint,&psy->payload[COMM_PARAM2],sizeof(int)); 
+bearint = byte_ritual(bearint); 
+bearing = float_ritual(bearint); 
+meters = psy->payload[COMM_PARAM1];
+printf("\
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+GOTO\n\
+Orient to bearing %f\n\
+Distance: %i meters\n\
+",psy->version,psy->sequence,psy->source_id,psy->dest_id,bearing,meters);
+
    break; 
 case GET_GPS:
 printf("\
