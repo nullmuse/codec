@@ -2,7 +2,17 @@
 #define ZERG_STATUS  1
 #define ZERG_COMMAND  2
 #define ZERG_GPS  3
+
 #define PSYHDR_SZ 12
+
+#define GET_STATUS 0
+#define GOTO 1
+#define GET_GPS 2
+#define RESERVED 3
+#define RETURN 4 
+#define SET_GROUP 5 
+#define STOP 6 
+#define REPEAT 7
 
 
 static const int OFF_LEN = 81; 
@@ -18,6 +28,10 @@ static const int STAT_HP_MAX = 6;
 static const int STAT_TYPE = 7; 
 static const int STAT_SP = 8;
 static const int STAT_NAME = 12; 
+
+static const int COMM_TYPE = 1; 
+static const int COMM_PARAM1 = 2; 
+static const int COMM_PARAM2 = 4; 
 
 typedef struct { 
 short version;

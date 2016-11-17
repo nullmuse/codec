@@ -79,12 +79,8 @@ return;
 
 void read_psy_status(psy_data *psy) { 
 
-int max_hp,ac,type;
-int spp;
-int hp; 
-FILE *fp;
+int hp,max_hp,ac,type,spp;
 float sp;
-unsigned int pls = 1;
 char *name;
 hp = psy->payload[STAT_HP];
 ac = htons(psy->payload[STAT_AC]);
@@ -112,7 +108,79 @@ return;
 
 } 
 
-void read_psy_command(psy_data *psy) { return; }
+void read_psy_command(psy_data *psy) { 
+
+int command; 
+
+command = psy->payload[COMM_TYPE + 1]; 
+
+switch(command) { 
+
+case GET_STATUS:
+printf("\
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+GET STATUS\n\
+",psy->version,psy->sequence,psy->source_id,psy->dest_id); 
+   break; 
+case GOTO:
+   break; 
+case GET_GPS:
+printf("\
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+GET GPS\n\
+",psy->version,psy->sequence,psy->source_id,psy->dest_id);
+   break; 
+case RESERVED:
+printf("\
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+RESERVED\n\
+",psy->version,psy->sequence,psy->source_id,psy->dest_id);
+   break;
+case RETURN:
+printf("\
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+RETURN\n\
+",psy->version,psy->sequence,psy->source_id,psy->dest_id);
+   break; 
+case SET_GROUP:
+   break; 
+case STOP:
+printf("\
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+STOP\n\
+",psy->version,psy->sequence,psy->source_id,psy->dest_id);
+   break;
+case REPEAT:
+   break;
+default:
+   printf("Unrecognized command in command packet\n"); 
+   break; 
+}
+
+
+
+
+return; 
+
+}
+
+
+
 
 void read_psy_gps(psy_data *psy) { return; } 
 

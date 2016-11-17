@@ -9,12 +9,12 @@ char *pdata = NULL;
 psy_data *psy; 
 if(argc <= 1) {
 printf("Usage: %s psy.pcap\n",argv[0]);
-goto RETURN;
+goto END;
 }
 pdata = read_pcap(argv[1]); 
 
 if (pdata == NULL) {
-     goto RETURN;
+     goto END;
 }
 
 
@@ -41,7 +41,7 @@ default:
    break; 
 }
 
-RETURN:
+END:
 if(pdata != NULL)
 free(pdata);
 if(psy != NULL)
