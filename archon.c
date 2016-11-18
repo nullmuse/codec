@@ -94,13 +94,10 @@ psy_data *transmute_header(char *pdata) {
 type_ver *tv = calloc(1,sizeof(type_ver)); 
 psy_data *psy = calloc(1,sizeof(psy_data)); 
 short tver = 0; 
-
 tver = pdata[OFF_VERT];
 memcpy(tv,&tver,sizeof(type_ver)); 
 psy->version = tv->t_ver; 
-printf("%i\n",psy->version); 
 psy->type =  tv->t_type; 
-printf("%i\n",psy->type);
 psy->length = pdata[OFF_LEN];
 psy->sequence = pdata[OFF_SEQ];
 psy->source_id = htons(pdata[OFF_SID]) + ((htons(pdata[OFF_SID + 1]) >> 8) & 0xFF);
@@ -347,17 +344,15 @@ char *tok_ptr;
 
 tok_ptr = calloc(HEADER_SIZE + 1,sizeof(char));
 psy_count = 0;
-for(i = 0; i < stream_size; i++) {
+for(i = 0; i < stream_size; ++i) {
 memcpy(tok_ptr,(stream + i),sizeof(int));
 if(!strncmp(tok_ptr,psychic_header,HEADER_SIZE)) {
-if(psy_list == NULL) {
-psy_list = calloc(1,sizeof(psy_data *));
-printf("%i\n",sizeof(psy_data *));
-psy_list[psy_count] = transmute_header((stream + i + 4));
+if(psy_count == 0) {
+psy_list[psy_count] = transmute_header((stream + i));
 psy_count++;
 }
-else if(psy_list != NULL) {
-psy_list = realloc(psy_list,sizeof(psy_data *));
+else if(*psy_list != NULL) {
+psy_list = realloc(psy_list,sizeof(psy_data *)); 
 psy_list[psy_count] = transmute_header(stream + i);
 psy_count++;
 }

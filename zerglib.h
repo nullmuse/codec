@@ -14,13 +14,22 @@
 #define STOP 6 
 #define REPEAT 7
 
-
+/*
 static const int OFF_LEN = 81; 
 static const int OFF_VERT = 78; 
 static const int OFF_SEQ = 89;
 static const int OFF_SID = 82;
 static const int OFF_DID = 84; 
 static const int OFF_PAY = 90; 
+*/
+static const int OFF_LEN = 85;
+static const int OFF_VERT = 82;
+static const int OFF_SEQ = 93;
+static const int OFF_SID = 86;
+static const int OFF_DID = 88;
+static const int OFF_PAY = 94;
+
+
 
 static const int STAT_HP = 2; 
 static const int STAT_AC = 3; 

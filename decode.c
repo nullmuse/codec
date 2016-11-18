@@ -18,14 +18,13 @@ pdata = read_pcap(argv[1]);
 if (pdata == NULL) {
      goto END;
 }
-printf("%X\n",pdata[0]); 
+psy_list = calloc(1,sizeof(psy_data *));
 psy_count = psionic_divagate(pdata,get_file_size(argv[1]),psy_list); 
 
-
-
 for(i = 0;i < psy_count; ++i) { 
+printf("==Message %i==\n",i + 1); 
+psy = psy_list[i];
 
-psy = psy_list[i]; 
 
 switch(psy->type) {
 
@@ -47,14 +46,14 @@ default:
    printf("Use Zerg psionic capture stream or recalibrate psi receiver\n"); 
    break; 
 }
-
+printf("==Message End==\n\n"); 
 }
 
 END:
-if(pdata != NULL)
-free(pdata);
-if(psy != NULL)
-free(psy);
+//if(pdata != NULL)
+//free(pdata);
+//if(psy_list != NULL)
+//free(psy_list);
 return 0; 
 
 } 
