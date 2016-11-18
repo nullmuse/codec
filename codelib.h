@@ -8,3 +8,4 @@ void read_psy_message(psy_data *psy);
 void read_psy_status(psy_data *psy);
 void read_psy_command(psy_data *psy);
 void read_psy_gps(psy_data *psy);
+int psionic_divagate(char *stream, int stream_size, psy_data **psy_list);

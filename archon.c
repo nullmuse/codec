@@ -2,9 +2,31 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include "zerglib.h"
 #include <arpa/inet.h>
+#include "zerglib.h"
+#include "pcap.h"
 
+const float FATHOM_METERS = 1.8288;
+
+
+static const char *zerg_breeds[] = {
+"Overmind",
+"Larva",
+"Cerebrate",
+"Overlord",
+"Queen",
+"Drone",
+"Zergling",
+"Lurker",
+"Broodling",
+"Hydralisk",
+"Guardian",
+"Scourge",
+"Ultralisk",
+"Mutalisk",
+"Defiler",
+"Devourer"
+};
 
 
 float float_ritual(int object) { 
@@ -76,7 +98,9 @@ short tver = 0;
 tver = pdata[OFF_VERT];
 memcpy(tv,&tver,sizeof(type_ver)); 
 psy->version = tv->t_ver; 
+printf("%i\n",psy->version); 
 psy->type =  tv->t_type; 
+printf("%i\n",psy->type);
 psy->length = pdata[OFF_LEN];
 psy->sequence = pdata[OFF_SEQ];
 psy->source_id = htons(pdata[OFF_SID]) + ((htons(pdata[OFF_SID + 1]) >> 8) & 0xFF);
@@ -278,6 +302,7 @@ falt = float_ritual(alt_i);
 fbear = float_ritual(bear_i);
 fsp = float_ritual(sp_i); 
 fac = float_ritual(ac_i);  
+falt = falt * FATHOM_METERS; 
 if(flong < 0.0) { 
 we = 'W';
 flong *= -1; 
@@ -303,8 +328,8 @@ Latitude: %2.9f deg. %c\n\
 Longitude: %2.9f deg. %c\n\
 Altitude: %2.1fm\n\
 Bearing: %2.9f deg.\n\
-Speed: %fkm/h\n\
-Accuracy: %fm\n\
+Speed: %.0fm/s\n\
+Accuracy: %.0fm\n\
 ",psy->version,psy->sequence,psy->source_id,psy->dest_id,flat,ns,flong,we,falt,fbear,fsp,fac);
 
 
@@ -314,5 +339,30 @@ return;
 } 
 
 
+int psionic_divagate(char *stream, int stream_size, psy_data **psy_list) {
 
+int i,psy_count;
+char *tok_ptr;
+
+
+tok_ptr = calloc(HEADER_SIZE + 1,sizeof(char));
+psy_count = 0;
+for(i = 0; i < stream_size; i++) {
+memcpy(tok_ptr,(stream + i),sizeof(int));
+if(!strncmp(tok_ptr,psychic_header,HEADER_SIZE)) {
+if(psy_list == NULL) {
+psy_list = calloc(1,sizeof(psy_data *));
+printf("%i\n",sizeof(psy_data *));
+psy_list[psy_count] = transmute_header((stream + i + 4));
+psy_count++;
+}
+else if(psy_list != NULL) {
+psy_list = realloc(psy_list,sizeof(psy_data *));
+psy_list[psy_count] = transmute_header(stream + i);
+psy_count++;
+}
+}
+}
+return psy_count;
+}
 

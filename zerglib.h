@@ -47,7 +47,7 @@ short length;
 short dest_id; 
 short source_id; 
 short sequence; 
-char *payload; 
+char *payload;  
 } psy_data;
 
 typedef struct { 
@@ -55,24 +55,6 @@ unsigned short t_type:4;
 unsigned short t_ver:4;
 } type_ver;  
 
-static const char *zerg_breeds[] = {
-"Overmind",
-"Larva",
-"Cerebrate",
-"Overlord",
-"Queen",
-"Drone",
-"Zergling",
-"Lurker",
-"Broodling",
-"Hydralisk",
-"Guardian",
-"Scourge",
-"Ultralisk",
-"Mutalisk",
-"Defiler",
-"Devourer"
-}; 
 
 
 
