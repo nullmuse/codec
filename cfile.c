@@ -49,8 +49,7 @@ fsize = get_file_size(fname);
 if(fsize <= 0) {
       perror("FATAL: capture is empty file");
       goto RETURN;
-   }
-
+      }
 if ((fp = fopen(fname, "rb")) == NULL) {
      perror("FATAL: cannot open file");
      goto RETURN;
@@ -73,5 +72,26 @@ fclose(fp);
 return retdata; 
 }
 
+
+int write_pcap(char *pcap_data,int pcap_size,char *filename) {
+
+int retdata = 0; 
+FILE *fp;
+
+if ((fp = fopen(filename, "wb+")) == NULL) {
+     perror("FATAL: cannot open file");
+     goto RETURN;
+}
+
+fwrite(pcap_data, sizeof(char), pcap_size,fp); 
+fclose(fp); 
+
+
+RETURN:
+//if(fp)
+//fclose(fp);
+return retdata;
+
+} 
 
 
