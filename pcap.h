@@ -14,7 +14,7 @@ static const short MN_VER = 4;
 
 static const short OFF_MJVER = 4;
 static const short OFF_EPOCH = 24; 
-
+static const short OFF_DMAC = 40;
 
 struct pcap_header_f { 
 short major_version;
@@ -36,7 +36,6 @@ struct eth_frame {
 char dest_mac[6]; 
 char src_mac[6]; 
 short eth_type; 
-short pad;
 }; 
 
 struct ip4_header { 

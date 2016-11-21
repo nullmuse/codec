@@ -1,10 +1,13 @@
 #include <stdio.h> 
 #include <stdlib.h>
 #include <string.h>
-#include "templar.h" 
+#include "templar.h"
+#include <sys/socket.h>
+#include <sys/ioctl.h> 
 #include "pcap.h"
 #include <sys/time.h>
-
+#include <net/if.h> 
+#include <unistd.h> 
 
 char *pcap_build_init(void) { 
 int holder;
@@ -53,6 +56,31 @@ return;
 }
 
 
+void pcap_build_eth(char *pcap_data) { 
+
+struct eth_frame ethernet; 
+/*
+int fd; 
+struct ifreq ifr; 
+char *interface = "eth0"; 
+char *mac = NULL; 
+
+fd = socket(AF_INET, SOCK_DGRAM, 0); 
+
+ifr.ifr_addr.sa_family = AF_INET; 
+memcpy(ifr.ifr_name, interface, IFNAMESIZ - 1); 
+ioctl(fd, SIOCGIFHWADDR, &ifr);
+memcpy(ethernet.dest_mac,(unsigned char *)ifr.ifr_hwaddr.sa_data,6); 
+memcpy(ethernet.src_mac, (unsigned char *)ifr.ifr_hwaddr.sa_data,6);
+*/
+memcpy(ethernet.dest_mac,"000000",6); 
+memcpy(ethernet.src_mac,"111111",6); 
+ethernet.eth_type = 8; 
+memcpy((pcap_data + OFF_DMAC),&ethernet,sizeof(struct eth_frame));
+
+return; 
+
+} 
 
 
 
