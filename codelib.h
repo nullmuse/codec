@@ -13,3 +13,5 @@ int write_pcap(char *pcap_data,int pcap_size,char *filename);
 char *pcap_build_init(void);
 void pcap_build_header(char *pcap_data, int pcap_size);
 void pcap_build_eth(char *pcap_data);
+void pcap_build_iph(char *pcap_data);
+void pcap_build_udp(char *pcap_data); 
