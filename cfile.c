@@ -39,7 +39,7 @@ return ret;
 } 
 
 
-char *read_pcap(char *fname) { 
+char *read_file(char *fname, int is_pcap) { 
 
 int fsize = 0; 
 char *retdata = NULL;
@@ -47,7 +47,7 @@ FILE *fp = NULL;
 
 fsize = get_file_size(fname);
 if(fsize <= 0) {
-      perror("FATAL: capture is empty file");
+      perror("FATAL: is empty file");
       goto RETURN;
       }
 if ((fp = fopen(fname, "rb")) == NULL) {
@@ -55,12 +55,13 @@ if ((fp = fopen(fname, "rb")) == NULL) {
      goto RETURN;
 }
 
+if(is_pcap) { 
 if(validate_file(fp) == OP_FAIL) {
 perror("FATAL: Not a valid pcap file"); 
 goto RETURN; 
 } 
 rewind(fp); 
-
+} 
 retdata = calloc(fsize + 1, sizeof(char)); 
 
 fread(retdata,sizeof(char),fsize,fp); 
@@ -93,5 +94,7 @@ RETURN:
 return retdata;
 
 } 
+
+
 
 

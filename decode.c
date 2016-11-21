@@ -13,7 +13,7 @@ if(argc <= 1) {
 printf("Usage: %s psy.pcap\n",argv[0]);
 goto END;
 }
-pdata = read_pcap(argv[1]); 
+pdata = read_file(argv[1],1); 
 
 if (pdata == NULL) {
      goto END;
