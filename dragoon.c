@@ -3,7 +3,7 @@
 #include <string.h>
 #include "templar.h" 
 #include "pcap.h"
-
+#include <sys/time.h>
 
 
 char *pcap_build_init(void) { 
@@ -35,5 +35,25 @@ memcpy((pcap_header + OFF_MJVER),&file_header,sizeof(struct pcap_header_f));
 return pcap_header; 
 
 } 
+
+
+void pcap_build_header(char *pcap_data, int pcap_size) { 
+
+struct pcap_header_p p_header; 
+struct timeval tv; 
+gettimeofday(&tv,NULL); 
+p_header.epoch = tv.tv_sec; 
+p_header.epoch_us = tv.tv_usec;
+p_header.data_len = pcap_size + ETH_SIZE + IP_SIZE + UDP_SIZE; 
+p_header.packet_len = pcap_size + ETH_SIZE + IP_SIZE + UDP_SIZE;
+memcpy((pcap_data + OFF_EPOCH),&p_header,sizeof(struct pcap_header_p));
+
+return; 
+
+}
+
+
+
+
 
 
