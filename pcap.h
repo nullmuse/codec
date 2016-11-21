@@ -20,6 +20,7 @@ static const short OFF_EPOCH = 24;
 static const short OFF_DMAC = 40;
 static const short OFF_IP = 54; 
 static const short OFF_UDP = 74;
+static const short OFF_ZERG = 82;
 
 struct pcap_header_f { 
 short major_version;

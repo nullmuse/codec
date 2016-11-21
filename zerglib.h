@@ -66,6 +66,14 @@ unsigned short t_ver:4;
 
 
 
+typedef struct { 
+char type:4,version:4; 
+char length[3]; 
+short source_id; 
+short dest_id; 
+int sequence; 
+} zerg_header; 
+
 
 
 

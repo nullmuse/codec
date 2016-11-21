@@ -6,6 +6,7 @@
 #include "zerglib.h"
 #include "pcap.h"
 #include "templar.h"
+
 const float FATHOM_METERS = 1.8288;
 
 
