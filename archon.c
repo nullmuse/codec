@@ -172,7 +172,6 @@ case SET_GROUP:
 memcpy(&group_id,&psy->payload[COMM_PARAM2],sizeof(int)); 
 is_add = psy->payload[COMM_PARAM1];
 group_id = byte_ritual(group_id); 
-group_id = (~group_id)+1;
 printf("\
 Version: %i\n\
 Sequence: %i\n\
