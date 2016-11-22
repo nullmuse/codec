@@ -74,7 +74,13 @@ short dest_id;
 int sequence; 
 } zerg_header; 
 
-
+struct zerg_stat{ 
+char hp[3];
+char ac;
+char max_hp[3];
+char type;
+char max_speed[4];
+};  
 
 
 
