@@ -1,6 +1,6 @@
 CFLAGS = -Wall -Wextra -pedantic -std=c99
-D_OBJS = decode.o cfile.o archon.o
-E_OBJS = encode.o dragoon.o cfile.o
+D_OBJS = decode.o cfile.o archon.o templar.o
+E_OBJS = encode.o dragoon.o cfile.o arbiter.o templar.o
 all: decode encode
 
 decode: $(D_OBJS)
@@ -11,5 +11,5 @@ encode: $(E_OBJS)
 
 
 clean:
-	rm -f $(D_OBJS) decode
+	rm -f $(D_OBJS) $(E_OBJS) decode encode
 

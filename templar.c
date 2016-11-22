@@ -59,6 +59,8 @@ __asm__(".att_syntax noprefix");
 return object;
 }
 
+
+
 unsigned long long_ritual(unsigned long object) {
 //Below is to make compiler happy
 object = object;
