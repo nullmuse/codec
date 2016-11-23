@@ -229,7 +229,8 @@ printf("%c %x\n",data[i], data[i]);
 }
 ppoint = &data[i];
 ppoint++; 
-for(i = 0;ppoint[i] != 0xa; ++i) {
+for(i = 0;ppoint[i] != 0xa && ppoint[i] != 0; ++i) {
+printf("add %c %x\n",ppoint[i],ppoint[i]);
 }
 printf("%c %x\n",*ppoint, *ppoint); 
 for(k = 0;k < 8;++k) {
