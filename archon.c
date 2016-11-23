@@ -264,7 +264,6 @@ Version: %i\n\
 Sequence: %i\n\
 From: %i\n\
 To: %i\n\
-GPS\n\
 Latitude: %2.9f deg. %c\n\
 Longitude: %2.9f deg. %c\n\
 Altitude: %2.1fm\n\
