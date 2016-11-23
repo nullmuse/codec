@@ -42,6 +42,7 @@ static const int COMM_TYPE = 1;
 static const int COMM_PARAM1 = 2; 
 static const int COMM_PARAM2 = 4; 
 
+static const float FATHOM_METERS = 1.8288;
 static const int GPS_LONG = 0; 
 static const int GPS_LAT = 8; 
 static const int GPS_ALT = 16;
@@ -81,6 +82,15 @@ char max_hp[3];
 char type;
 char max_speed[4];
 };  
+
+struct zerg_gps{ 
+char lat[8];
+char lon[8];
+char alt[4];
+char bearing[4];
+char speed[4];
+char accuracy[4];
+};
 
 
 

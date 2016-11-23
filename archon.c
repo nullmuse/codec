@@ -7,7 +7,6 @@
 #include "pcap.h"
 #include "templar.h"
 
-const float FATHOM_METERS = 1.8288;
 
 
 static const char *zerg_breeds[] = {

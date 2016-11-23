@@ -97,12 +97,15 @@ char *hps;
 char *arm;
 char *float_str;
 int float_holder;
+long double_holder;
 int hp,namelen;
 float f_cont;
+double d_cont;
 char *payload;
 char *name;
 char *ppoint;
 struct zerg_stat zerg;
+struct zerg_gps gps; 
 int i,k,l,length,copy_len;  
 switch(z_header->type) { 
 
@@ -216,9 +219,148 @@ memcpy((payload + PSYHDR_SZ),&zerg,sizeof(struct zerg_stat));
 memcpy((payload + PSYHDR_SZ + sizeof(struct zerg_stat)),name,namelen);
 *tot_len = copy_len;
 break;
+
+
+case 3:
+for(i = 0;data[i] != 'L'; ++i) {
 }
+ppoint = &data[i];
+while(*ppoint != ' ') {
+ppoint++;
+}
+ppoint++;
+for(i = 0; ppoint[i] != ' ';++i) {
+}
+float_str = calloc(i + 1,sizeof(char));
+memcpy(float_str,ppoint,i);
+d_cont = atof(float_str);
+while(*ppoint != ' ') {
+ppoint++;
+}
+ppoint++;
+ppoint += 5;
+if(*ppoint > 0x4e) { 
+d_cont = d_cont * -1;
+};
+memcpy(&double_holder,&d_cont,sizeof(long));
+gps.lon[7] = double_holder;
+gps.lon[6] = double_holder >> 8;
+gps.lon[5] = double_holder >> 16;
+gps.lon[4] = double_holder >> 24;
+gps.lon[3] = double_holder >> 32;
+gps.lon[2] = double_holder >> 40;
+gps.lon[1] = double_holder >> 48;
+gps.lon[0] = double_holder >> 56;
+free(float_str); 
+while(*ppoint != ' ') {
+ppoint++;
+}
+ppoint++;
+for(i = 0; ppoint[i] != ' ';++i) {
+}
+float_str = calloc(i + 1,sizeof(char));
+memcpy(float_str,ppoint,i);
+d_cont = atof(float_str);
+while(*ppoint != ' ') {
+ppoint++;
+}
+ppoint++;
+ppoint += 5;
+if(*ppoint > 0x4e) {
+d_cont = d_cont * -1;
+};
+memcpy(&double_holder,&d_cont,sizeof(long));
+gps.lat[7] = double_holder;
+gps.lat[6] = double_holder >> 8;
+gps.lat[5] = double_holder >> 16;
+gps.lat[4] = double_holder >> 24;
+gps.lat[3] = double_holder >> 32;
+gps.lat[2] = double_holder >> 40;
+gps.lat[1] = double_holder >> 48;
+gps.lat[0] = double_holder >> 56;
+free(float_str);
+while(*ppoint != ' ') {
+ppoint++;
+}
+ppoint++;
+for(i = 0; ppoint[i] != 'm';++i) {
+}
+float_str = calloc(i + 1,sizeof(char));
+memcpy(float_str,ppoint,i);
+f_cont = atof(float_str);
+f_cont /= FATHOM_METERS; 
+memcpy(&float_holder,&f_cont,sizeof(int));
+gps.alt[3] = float_holder;
+gps.alt[2] = float_holder >> 8;
+gps.alt[1] = float_holder >> 16;
+gps.alt[0] = float_holder >> 24;
+free(float_str);
+while(*ppoint != ' ') {
+ppoint++;
+}
+ppoint++;
+for(i = 0; ppoint[i] != ' ';++i) {
+}
+
+float_str = calloc(i + 1,sizeof(char));
+memcpy(float_str,ppoint,i);
+f_cont = atof(float_str);
+memcpy(&float_holder,&f_cont,sizeof(int));
+gps.bearing[3] = float_holder;
+gps.bearing[2] = float_holder >> 8;
+gps.bearing[1] = float_holder >> 16;
+gps.bearing[0] = float_holder >> 24;
+free(float_str);
+while(*ppoint != ' ') {
+ppoint++;
+}
+ppoint++; 
+for(i = 0; ppoint[i] != 'm';++i) {
+}
+float_str = calloc(i + 1,sizeof(char));
+memcpy(float_str,ppoint,i);
+f_cont = atof(float_str);
+memcpy(&float_holder,&f_cont,sizeof(int));
+gps.speed[3] = float_holder;
+gps.speed[2] = float_holder >> 8;
+gps.speed[1] = float_holder >> 16;
+gps.speed[0] = float_holder >> 24;
+free(float_str);
+while(*ppoint != ' ') {
+ppoint++;
+}
+ppoint++; 
+for(i = 0; ppoint[i] != 'm';++i) {
+}
+float_str = calloc(i + 1,sizeof(char));
+memcpy(float_str,ppoint,i);
+f_cont = atof(float_str);
+memcpy(&float_holder,&f_cont,sizeof(int));
+gps.accuracy[3] = float_holder;
+gps.accuracy[2] = float_holder >> 8;
+gps.accuracy[1] = float_holder >> 16;
+gps.accuracy[0] = float_holder >> 24;
+free(float_str);
+copy_len =  PSYHDR_SZ + sizeof(struct zerg_gps);
+payload = calloc(copy_len,sizeof(char)); 
+z_header->length[0] = copy_len  >> 16;
+z_header->length[1] = copy_len >> 8;
+z_header->length[2] = copy_len;
+z_header->dest_id = htons(z_header->dest_id);
+z_header->source_id = htons(z_header->source_id);
+z_header->sequence = htonl(z_header->sequence);
+memcpy(payload,z_header,sizeof(zerg_header));
+memcpy((payload + PSYHDR_SZ),&gps,sizeof(struct zerg_gps));
+*tot_len = copy_len;
+break;
+}
+
+
 return payload; 
-} 
+}
+
+
+ 
 
 
 
