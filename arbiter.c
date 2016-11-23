@@ -225,14 +225,11 @@ case 2:
 for(i = 0;data[i] != 'T'; ++i) {
 }
 for(;data[i] != 0xa && data[i] != 0; ++i) {
-printf("%c %x\n",data[i], data[i]);
 }
 ppoint = &data[i];
 ppoint++; 
 for(i = 0;ppoint[i] != 0xa && ppoint[i] != 0; ++i) {
-printf("add %c %x\n",ppoint[i],ppoint[i]);
 }
-printf("%c %x\n",*ppoint, *ppoint); 
 for(k = 0;k < 8;++k) {
 if(!strncmp(ppoint,ZERG_COMMANDS[k],i)) {
 command.command = htons(k);
