@@ -128,7 +128,7 @@ memcpy(&bearint,&psy->payload[COMM_PARAM2],sizeof(int));
 bearint = byte_ritual(bearint); 
 bearing = float_ritual(bearint); 
 memcpy(&meters,&psy->payload[COMM_PARAM1],sizeof(short));
-meters = byte_ritual(meters); 
+meters = ntohs(meters); 
 printf("\
 Version: %i\n\
 Sequence: %i\n\
