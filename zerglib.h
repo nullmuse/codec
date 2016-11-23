@@ -24,7 +24,7 @@ static const int OFF_PAY = 90;
 */
 static const int OFF_LEN = 85;
 static const int OFF_VERT = 82;
-static const int OFF_SEQ = 93;
+static const int OFF_SEQ = 90;
 static const int OFF_SID = 86;
 static const int OFF_DID = 88;
 static const int OFF_PAY = 94;
@@ -58,7 +58,7 @@ short type;
 short length; 
 short dest_id; 
 short source_id; 
-short sequence; 
+int sequence; 
 char *payload;  
 } psy_data;
 
