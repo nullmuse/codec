@@ -22,7 +22,7 @@ static const int OFF_SID = 82;
 static const int OFF_DID = 84; 
 static const int OFF_PAY = 90; 
 */
-static const int OFF_LEN = 85;
+static const int OFF_LEN = 83;
 static const int OFF_VERT = 82;
 static const int OFF_SEQ = 90;
 static const int OFF_SID = 86;
@@ -55,7 +55,7 @@ static const int GPS_ACC = 28;
 typedef struct { 
 short version;
 short type;   
-short length; 
+int length; 
 short dest_id; 
 short source_id; 
 int sequence; 

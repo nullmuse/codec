@@ -480,7 +480,17 @@ return payload;
 }
 
 
- 
-
-
+void size_fixups(char *packet) { 
+int length;
+short udp_length = 8;
+char short_t[2];
+char int_t[4];
+memcpy(&length,&packet[OFF_LEN],sizeof(short) + 1);
+printf("length %i\n",length); 
+length = byte_ritual(length) >> 8;;
+printf("hton'ed length %i\n",length);
+udp_length += length; 
+short_t[1] = udp_length;
+short_t[0] = udp_length >> 8;
+}
 

@@ -17,3 +17,4 @@ void pcap_build_iph(char *pcap_data);
 void pcap_build_udp(char *pcap_data); 
 int transmute_input(char *pdata);
 char *zerg_type_encoder(zerg_header *z_header, char *data, int *tot_len);
+void size_fixups(char *packet);

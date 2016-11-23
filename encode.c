@@ -23,10 +23,11 @@ printf("%i\n",z_header->type);
 printf("%i\n",z_header->dest_id); 
 printf("%s\n",rfile); 
 payload = zerg_type_encoder(z_header,rfile, &zerg_len);
-printf("%i\n",zerg_len);
+printf("zerg_len %i\n",zerg_len);
 total_data = calloc(PCAP_SIZE + zerg_len,sizeof(char)); 
 memcpy(total_data,pcap_header,PCAP_SIZE); 
 memcpy(total_data + PCAP_SIZE,payload,zerg_len);
+size_fixups(total_data);
 write_pcap(total_data,PCAP_SIZE + zerg_len,"testout.pcap");
 
 return 0; 
