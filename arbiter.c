@@ -127,8 +127,7 @@ z_header->source_id = htons(z_header->source_id);
 z_header->sequence = htonl(z_header->sequence);
 memcpy(payload,z_header,sizeof(zerg_header)); 
 memcpy(payload + PSYHDR_SZ,ppoint,length);
-*tot_len = copy_len; 
-printf("%i\n",byte_ritual(z_header->dest_id)); 
+*tot_len = copy_len;  
 break;
 
 
@@ -141,7 +140,6 @@ ppoint++;
 }
 ppoint++;
 for(i=0; ppoint[i] != 0;++i) {
-printf("%c %x\n",ppoint[i],ppoint[i]);
 }
 namelen = i; 
 name = ppoint;
@@ -161,7 +159,6 @@ ppoint = &ppoint[i] + 1;
 for(i = 0; ppoint[i] != 0xa;++i) {
 }
 memcpy(hps,ppoint,i);
-printf("%s\n",hps);
 hp = transmute_char(hps);
 zerg.max_hp[0] = hp >> 16;
 zerg.max_hp[1] = hp >> 8;
@@ -206,7 +203,6 @@ zerg.max_speed[2] = float_holder >> 8;
 zerg.max_speed[1] = float_holder >> 16;
 zerg.max_speed[0] = float_holder >> 24;
 free(float_str);
-printf("%i\n",namelen); 
 payload = calloc(copy_len,sizeof(char)); 
 z_header->length[0] = copy_len  >> 16;
 z_header->length[1] = copy_len >> 8;
@@ -288,7 +284,7 @@ for(i = 0; ppoint[i] != 'm';++i) {
 float_str = calloc(i + 1,sizeof(char));
 memcpy(float_str,ppoint,i);
 f_cont = atof(float_str);
-f_cont /= FATHOM_METERS; 
+f_cont /= FATHOM_METERS;
 memcpy(&float_holder,&f_cont,sizeof(int));
 gps.alt[3] = float_holder;
 gps.alt[2] = float_holder >> 8;
@@ -311,6 +307,9 @@ gps.bearing[2] = float_holder >> 8;
 gps.bearing[1] = float_holder >> 16;
 gps.bearing[0] = float_holder >> 24;
 free(float_str);
+while(*ppoint != 0xa) {
+ppoint++;
+}
 while(*ppoint != ' ') {
 ppoint++;
 }
@@ -350,7 +349,7 @@ z_header->dest_id = htons(z_header->dest_id);
 z_header->source_id = htons(z_header->source_id);
 z_header->sequence = htonl(z_header->sequence);
 memcpy(payload,z_header,sizeof(zerg_header));
-memcpy((payload + PSYHDR_SZ),&gps,sizeof(struct zerg_gps));
+memcpy((payload + sizeof(zerg_header)),&gps,sizeof(struct zerg_gps));
 *tot_len = copy_len;
 break;
 }
