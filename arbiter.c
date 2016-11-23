@@ -103,10 +103,15 @@ float f_cont;
 double d_cont;
 char *payload;
 char *name;
+char *param_str;
+short param_short;
+int param_int;
 char *ppoint;
 struct zerg_stat zerg;
 struct zerg_gps gps; 
+struct zerg_command command;
 int i,k,l,length,copy_len;  
+
 switch(z_header->type) { 
 
 case 0:
@@ -213,6 +218,119 @@ z_header->sequence = htonl(z_header->sequence);
 memcpy(payload,z_header,sizeof(zerg_header));
 memcpy((payload + PSYHDR_SZ),&zerg,sizeof(struct zerg_stat)); 
 memcpy((payload + PSYHDR_SZ + sizeof(struct zerg_stat)),name,namelen);
+*tot_len = copy_len;
+break;
+
+case 2:
+for(i = 0;data[i] != 'T'; ++i) {
+}
+for(;data[i] != 0xa && data[i] != 0; ++i) {
+printf("%c %x\n",data[i], data[i]);
+}
+ppoint = &data[i];
+ppoint++; 
+for(i = 0;ppoint[i] != 0xa; ++i) {
+}
+printf("%c %x\n",*ppoint, *ppoint); 
+for(k = 0;k < 8;++k) {
+if(!strncmp(ppoint,ZERG_COMMANDS[k],i)) {
+command.command = htons(k);
+break;
+}
+}
+switch(k) { 
+case 1:
+ppoint += (i + 1);
+while(*ppoint != ':') {
+ppoint++;
+}
+ppoint += 2; 
+for(i = 0; ppoint[i] != 0xa;++i) {
+}
+float_str = calloc(i + 1,sizeof(char));
+memcpy(float_str,ppoint,i);
+f_cont = atof(float_str);
+memcpy(&float_holder,&f_cont,sizeof(int));
+command.param2[3] = float_holder;
+command.param2[2] = float_holder >> 8;
+command.param2[1] = float_holder >> 16;
+command.param2[0] = float_holder >> 24;
+free(float_str); 
+while(*ppoint != ' ') {
+ppoint++;
+}
+ppoint++; 
+for(i = 0; ppoint[i] != ' ';++i) {
+}
+param_str = calloc(i + 1,sizeof(char));
+memcpy(param_str,ppoint,i);
+param_short = atoi(param_str); 
+command.param1[1] = param_short;
+command.param1[0] = param_short >> 8;
+free(param_str); 
+break;
+case 5:
+ppoint += (i + 1);
+if(*ppoint == 'A') { 
+command.param1[1] = 1;
+command.param1[0] = 0;
+}
+else{
+command.param1[1] = 0;
+command.param1[0] = 0;
+}
+while(*ppoint != ':') {
+ppoint++;
+}
+ppoint += 2;
+for(i = 0; ppoint[i] != 0xa;++i) {
+}
+param_str = calloc(i + 1,sizeof(char));
+memcpy(param_str,ppoint,i);
+param_int = atoi(param_str);
+command.param2[3] = param_int;
+command.param2[2] = param_int >> 8;
+command.param2[1] = param_int >> 16;
+command.param2[0] = param_int >> 24;
+free(param_str); 
+break;
+case 7:
+command.param1[0] = 0;
+command.param1[1] = 0;
+while(*ppoint != ':') {
+ppoint++;
+}
+ppoint += 2;
+for(i = 0; ppoint[i] != 0xa;++i) {
+}
+param_str = calloc(i + 1,sizeof(char));
+memcpy(param_str,ppoint,i);
+param_int = atoi(param_str);
+command.param2[3] = param_int;
+command.param2[2] = param_int >> 8;
+command.param2[1] = param_int >> 16;
+command.param2[0] = param_int >> 24;
+free(param_str);
+break;
+default:
+command.param1[0] = 0;
+command.param1[1] = 0;
+command.param2[3] = 0;
+command.param2[2] = 0;
+command.param2[1] = 0;
+command.param2[0] = 0;
+break;
+}
+copy_len =  PSYHDR_SZ + sizeof(struct zerg_command);
+payload = calloc(copy_len,sizeof(char));
+z_header->length[0] = copy_len  >> 16;
+z_header->length[1] = copy_len >> 8;
+z_header->length[2] = copy_len;
+z_header->dest_id = htons(z_header->dest_id);
+z_header->source_id = htons(z_header->source_id);
+z_header->sequence = htonl(z_header->sequence);
+memcpy(payload,z_header,sizeof(zerg_header));
+memcpy((payload + sizeof(zerg_header)),&command,sizeof(struct zerg_command));
 *tot_len = copy_len;
 break;
 
@@ -352,8 +470,13 @@ memcpy(payload,z_header,sizeof(zerg_header));
 memcpy((payload + sizeof(zerg_header)),&gps,sizeof(struct zerg_gps));
 *tot_len = copy_len;
 break;
-}
 
+default:
+
+printf("Error: Unrecognized packet type\n");
+payload = NULL;
+break;
+}
 
 return payload; 
 }

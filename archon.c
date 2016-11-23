@@ -135,7 +135,7 @@ Sequence: %i\n\
 From: %i\n\
 To: %i\n\
 GOTO\n\
-Orient to bearing %f\n\
+Orient to bearing: %f\n\
 Distance: %i meters\n\
 ",psy->version,psy->sequence,psy->source_id,psy->dest_id,bearing,meters);
 
@@ -177,7 +177,7 @@ Sequence: %i\n\
 From: %i\n\
 To: %i\n\
 SET GROUP\n\
-%s Group ID:%i\n\
+%s Group ID: %i\n\
 ",psy->version,psy->sequence,psy->source_id,psy->dest_id,add_remove[is_add],group_id);
 
    break; 
@@ -199,7 +199,7 @@ Sequence: %i\n\
 From: %i\n\
 To: %i\n\
 REPEAT\n\
-Repeat Sequence:%i\n\
+Repeat Sequence: %i\n\
 ",psy->version,psy->sequence,psy->source_id,psy->dest_id,repseq);
    break;
 default:

@@ -41,6 +41,8 @@ static const int STAT_NAME = 12;
 static const int COMM_TYPE = 1; 
 static const int COMM_PARAM1 = 2; 
 static const int COMM_PARAM2 = 4; 
+static const char *ZERG_COMMANDS[] = {"GET STATUS","GOTO","GET GPS","RESERVED","RETURN","SET GROUP","STOP","REPEAT"};
+
 
 static const float FATHOM_METERS = 1.8288;
 static const int GPS_LONG = 0; 
@@ -91,6 +93,13 @@ char bearing[4];
 char speed[4];
 char accuracy[4];
 };
+
+struct zerg_command{
+short command;
+char param1[2];
+char param2[4];
+};
+
 
 
 
