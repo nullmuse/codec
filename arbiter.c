@@ -481,16 +481,28 @@ return payload;
 
 
 void size_fixups(char *packet) { 
-int length;
-short udp_length = 8;
+int zerg_length;
+short udp_length = UDP_SIZE;
+short ip_length = IP_SIZE;
+int packet_length = ETH_SIZE + UDP_SIZE + IP_SIZE;
 char short_t[2];
 char int_t[4];
-memcpy(&length,&packet[OFF_LEN],sizeof(short) + 1);
-printf("length %i\n",length); 
-length = byte_ritual(length) >> 8;;
-printf("hton'ed length %i\n",length);
-udp_length += length; 
+memcpy(&zerg_length,&packet[OFF_LEN],sizeof(short) + 1);
+zerg_length = byte_ritual(zerg_length) >> 8;
+udp_length += zerg_length; 
 short_t[1] = udp_length;
 short_t[0] = udp_length >> 8;
+memcpy(&packet[OFF_UDP + 4],&short_t,sizeof(short));
+ip_length += udp_length;
+short_t[1] = ip_length;
+short_t[0] = ip_length >> 8;
+memcpy(&packet[OFF_IP + 2],&short_t,sizeof(short));
+packet_length += zerg_length;
+int_t[3] = packet_length;
+int_t[2] = packet_length >> 8;
+int_t[1] = packet_length >> 16;
+int_t[0] = packet_length >> 24;
+memcpy(&packet[OFF_EPOCH + 8],&packet_length,sizeof(int));
+memcpy(&packet[OFF_EPOCH + 12],&packet_length,sizeof(int));
 }
 
