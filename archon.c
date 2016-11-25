@@ -280,7 +280,7 @@ return;
 
 } 
 
-
+/*
 int psionic_divagate(char *stream, int stream_size, psy_data **psy_list) {
 
 int i,psy_count;
@@ -305,4 +305,21 @@ psy_count++;
 }
 return psy_count;
 }
-
+*/
+int psionic_divagate(char *stream, int stream_size, psy_data **psy_list) {
+int i,psy_count;
+char *ppoint;
+int packet_length = 0;
+ppoint = stream + OFF_EPOCH; 
+psy_count = 0;
+int max = stream + stream_size; 
+while(ppoint < max) {
+packet_length = *(ppoint + 8);
+printf("%x is packet_length\n",packet_length); 
+ppoint += 16; 
+psy_list[psy_count] = transmute_header(ppoint); 
+psy_count++; 
+ppoint += packet_length; 
+}
+return psy_count; 
+}

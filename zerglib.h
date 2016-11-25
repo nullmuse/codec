@@ -15,19 +15,20 @@
 #define REPEAT 7
 
 /*
-static const int OFF_LEN = 81; 
-static const int OFF_VERT = 78; 
-static const int OFF_SEQ = 89;
-static const int OFF_SID = 82;
-static const int OFF_DID = 84; 
-static const int OFF_PAY = 90; 
-*/
 static const int OFF_LEN = 83;
 static const int OFF_VERT = 82;
 static const int OFF_SEQ = 90;
 static const int OFF_SID = 86;
 static const int OFF_DID = 88;
 static const int OFF_PAY = 94;
+*/
+
+static const int OFF_LEN = 43;
+static const int OFF_VERT = 42;
+static const int OFF_SEQ = 50;
+static const int OFF_SID = 46;
+static const int OFF_DID = 48;
+static const int OFF_PAY = 54;
 
 
 
