@@ -1,17 +1,17 @@
 #include <stdio.h> 
 #include <stdlib.h>
 #include <string.h>
-#include "templar.h"
 #include <sys/socket.h>
 #include <sys/ioctl.h> 
-#include "pcap.h"
 #include <sys/time.h>
 #include <net/if.h> 
 #include <unistd.h> 
+#include "pcap.h"
+#include "codelib.h"
+
 
 char *pcap_build_init(void) { 
-char *pcap_header = calloc(PCAP_SIZE, sizeof(char)); 
-
+char *pcap_header = calloc(PCAP_SIZE, sizeof(char));
 struct pcap_header_f file_header; 
 
 file_header.major_version = MJ_VER;
@@ -24,14 +24,7 @@ file_header.link_type = 1;
 
 memcpy(pcap_header,psychic_header,HEADER_SIZE); 
 
-if(!strncmp(pcap_header,psychic_header,HEADER_SIZE)) {
-printf("Worked\n"); 
-}
-
 memcpy((pcap_header + OFF_MJVER),&file_header,sizeof(struct pcap_header_f)); 
-
-//memcpy((pcap_header + OFF_MNVER),&MN_VER,sizeof(short));
-
 
 return pcap_header; 
 

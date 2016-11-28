@@ -2,6 +2,7 @@
 
 int validate_file(FILE *fp); 
 char *read_file(char *fname, int is_pcap); 
+int write_pcap(char *pcap_data,int pcap_size,char *filename);
 int get_file_size(char *fname);
 psy_data *transmute_header(char *pdata); 
 void read_psy_message(psy_data *psy);

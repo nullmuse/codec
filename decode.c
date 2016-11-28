@@ -22,7 +22,6 @@ psy_list = calloc(1,sizeof(psy_data *));
 psy_count = psionic_divagate(pdata,get_file_size(argv[1]),psy_list); 
 
 for(i = 0;i < psy_count; ++i) { 
-printf("==Message %i==\n",i + 1); 
 psy = psy_list[i];
 
 
@@ -46,7 +45,7 @@ default:
    printf("Use Zerg psionic capture stream or recalibrate psi receiver\n"); 
    break; 
 }
-printf("==Message End==\n\n"); 
+printf("\t\n");
 }
 
 END:

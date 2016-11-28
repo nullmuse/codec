@@ -315,7 +315,6 @@ psy_count = 0;
 int max = stream + stream_size; 
 while(ppoint < max) {
 packet_length = *(ppoint + 8);
-printf("%x is packet_length\n",packet_length); 
 ppoint += 16; 
 psy_list[psy_count] = transmute_header(ppoint); 
 psy_count++; 

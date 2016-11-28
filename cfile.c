@@ -9,7 +9,6 @@ int get_file_size(char *fname) {
 struct stat file_info;
 int ret;
 if(stat(fname,&file_info) == -1) {
-       perror("FATAL: file does not exist");
        return -1;
 }
 ret = file_info.st_size;
@@ -73,19 +72,26 @@ fclose(fp);
 return retdata; 
 }
 
-
 int write_pcap(char *pcap_data,int pcap_size,char *filename) {
 
-int retdata = 0; 
+int retdata = 0;
 FILE *fp;
+if (get_file_size(filename) == -1) { 
 
 if ((fp = fopen(filename, "wb+")) == NULL) {
      perror("FATAL: cannot open file");
      goto RETURN;
 }
+}
+else { 
+if ((fp = fopen(filename, "ab+")) == NULL) {
+     perror("FATAL: cannot open file");
+     goto RETURN;
+}
+}
 
-fwrite(pcap_data, sizeof(char), pcap_size,fp); 
-fclose(fp); 
+fwrite(pcap_data, sizeof(char), pcap_size,fp);
+fclose(fp);
 
 
 RETURN:
@@ -93,7 +99,7 @@ RETURN:
 //fclose(fp);
 return retdata;
 
-} 
+}
 
 
 
