@@ -19,14 +19,16 @@ char *pcap_header;
 rfile = read_file(argv[1],0);
 rtok = strtok(rfile, "\t");
 while(rtok != NULL) {
+if(!strcmp(rtok,"\n"))
+break;
 pcap_header = pcap_build_init();
 pcap_build_header(pcap_header,0); 
 pcap_build_eth(pcap_header); 
 pcap_build_iph(pcap_header);
 pcap_build_udp(pcap_header); 
 z_header = transmute_input(rtok);
-printf("%i\n",z_header->type); 
-printf("%i\n",z_header->dest_id);  
+printf("type: %i\n",z_header->type); 
+printf("dest_id: %i\n",z_header->dest_id);  
 payload = zerg_type_encoder(z_header,rtok, &zerg_len);
 printf("zerg_len %i\n",zerg_len);
 total_data = calloc(PCAP_SIZE + zerg_len,sizeof(char)); 

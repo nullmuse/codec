@@ -111,9 +111,7 @@ struct zerg_stat zerg;
 struct zerg_gps gps; 
 struct zerg_command command;
 int i,k,l,length,copy_len;  
-
 switch(z_header->type) { 
-
 case 0:
 for(i = 0;data[i] != 'M'; ++i) { 
 }
@@ -144,6 +142,7 @@ while(*ppoint != ' ') {
 ppoint++; 
 }
 ppoint++;
+printf("%s\n",ppoint); 
 for(i=0; ppoint[i] != 0;++i) {
 }
 namelen = i; 
@@ -153,6 +152,7 @@ ppoint++;
 }
 ppoint++;
 for(i=0; ppoint[i] != '/';++i) {
+printf("%x %c\n",ppoint[i],ppoint[i]);
 }
 hps = calloc(i + 1,sizeof(char)); 
 memcpy(hps,ppoint,i); 
@@ -169,7 +169,7 @@ zerg.max_hp[0] = hp >> 16;
 zerg.max_hp[1] = hp >> 8;
 zerg.max_hp[2] = hp;
 free(hps); 
-while(*ppoint != ' ') { 
+while(*ppoint != 0 && *ppoint != ' ') { 
 ppoint++;
 }
 ppoint++;
@@ -183,7 +183,7 @@ break;
 }
 }
 
-while(*ppoint != ' ') { 
+while(*ppoint != 0 && *ppoint != ' ') { 
 ppoint++;
 }
 ppoint++;
@@ -192,7 +192,7 @@ for(i = 0; ppoint[i] != 0xa;++i) {
 arm = calloc(i + 1,sizeof(char)); 
 zerg.ac = transmute_char(arm);
 free(arm);   
-while(*ppoint != ' ') { 
+while(*ppoint != 0 && *ppoint != ' ') { 
 ppoint++;
 }
 ppoint++;

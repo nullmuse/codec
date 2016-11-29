@@ -91,11 +91,11 @@ Version: %i\n\
 Sequence: %i\n\
 From: %i\n\
 To: %i\n\
-Name:%s\n\
-HP:%i/%i\n\
-Type:%s\n\
-Armor:%i\n\
-MaxSpeed:%fm/s\n\
+Name: %s\n\
+HP: %i/%i\n\
+Type: %s\n\
+Armor: %i\n\
+MaxSpeed: %fm/s\n\
 ",psy->version,psy->sequence,psy->source_id,psy->dest_id,name,hp,max_hp,zerg_breeds[type],ac,sp);
 
 
