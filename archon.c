@@ -307,13 +307,13 @@ return psy_count;
 }
 */
 int psionic_divagate(char *stream, int stream_size, psy_data **psy_list) {
-int i,psy_count;
+int psy_count;
 char *ppoint;
 int packet_length = 0;
 ppoint = stream + OFF_EPOCH; 
 psy_count = 0;
-int max = stream + stream_size; 
-while(ppoint < max) {
+long max = (long) stream + stream_size; 
+while((long)ppoint < max) {
 packet_length = *(ppoint + 8);
 ppoint += 16; 
 psy_list[psy_count] = transmute_header(ppoint); 

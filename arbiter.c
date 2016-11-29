@@ -29,6 +29,9 @@ static const char *zerg_breeds[] = {
 };
 
 
+static const char *ZERG_COMMANDS[] = {"GET STATUS","GOTO","GET GPS","RESERVED","RETURN","SET GROUP","STOP","REPEAT"};
+
+
 zerg_header *transmute_input(char *pdata) {
 
 
@@ -110,7 +113,7 @@ char *ppoint;
 struct zerg_stat zerg;
 struct zerg_gps gps; 
 struct zerg_command command;
-int i,k,l,length,copy_len;  
+int i,k,length,copy_len;  
 switch(z_header->type) { 
 case 0:
 for(i = 0;data[i] != 'M'; ++i) { 
@@ -482,12 +485,10 @@ return payload;
 
 void size_fixups(char *packet) { 
 int zerg_length;
-int size_frame = 40;
 short udp_length = UDP_SIZE;
 short ip_length = IP_SIZE;
 int packet_length = ETH_SIZE + UDP_SIZE + IP_SIZE;
 char short_t[2];
-char int_t[4];
 memcpy(&zerg_length,&packet[OFF_LEN + 40],sizeof(short) + 1);
 printf("zerg_length %i hex: %x\n",zerg_length,zerg_length);
 zerg_length = byte_ritual(zerg_length) >> 8;

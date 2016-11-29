@@ -8,7 +8,6 @@
 int main(int argc, char *argv[]) {
 char *rfile = NULL;
 char *rtok = NULL;
-int i;
 int zerg_len; 
 int psize = PCAP_SIZE;
 int header_add = 0;
@@ -16,6 +15,10 @@ zerg_header *z_header;
 char *payload; 
 char *total_data;
 char *pcap_header; 
+if(argc != 2) { 
+printf("%s description_file\n",argv[1]); 
+return 1;
+}
 rfile = read_file(argv[1],0);
 rtok = strtok(rfile, "\t");
 while(rtok != NULL) {
