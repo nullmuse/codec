@@ -306,9 +306,12 @@ psy_count++;
 return psy_count;
 }
 */
-int psionic_divagate(char *stream, int stream_size, psy_data **psy_list) {
-int psy_count;
+ psy_data **psionic_divagate(char *stream, int stream_size, int *psy_ptr) {
+int psy_count,i;
 char *ppoint;
+psy_data **psy_list;
+psy_data **psy_temp; 
+psy_data *header_pointer; 
 int packet_length = 0;
 ppoint = stream + OFF_EPOCH; 
 psy_count = 0;
@@ -316,9 +319,28 @@ long max = (long) stream + stream_size;
 while((long)ppoint < max) {
 packet_length = *(ppoint + 8);
 ppoint += 16; 
-psy_list[psy_count] = transmute_header(ppoint); 
+if(psy_count == 0) {
+psy_list = calloc(psy_count + 1,sizeof(psy_data *));
+header_pointer = transmute_header(ppoint);
+printf("before memcpy\n");
+memcpy(&psy_list[psy_count],&header_pointer,sizeof(psy_data *)); 
+printf("after memcpy\n"); 
 psy_count++; 
+}
+else {
+psy_temp = calloc(psy_count + 1,sizeof(psy_data *));
+for(i = 0;i < psy_count;i++) { 
+memcpy(&psy_temp[i],&psy_list[i],sizeof(psy_data *));
+}
+free(psy_list);
+psy_list = psy_temp;
+header_pointer = transmute_header(ppoint);
+memcpy(&psy_list[psy_count],&header_pointer,sizeof(char *));
+psy_count++;
+}
+
 ppoint += packet_length; 
 }
-return psy_count; 
+memcpy(psy_ptr,&psy_count,sizeof(int)); 
+return psy_list; 
 }

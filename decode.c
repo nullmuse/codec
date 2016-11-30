@@ -14,17 +14,15 @@ printf("Usage: %s psy.pcap\n",argv[0]);
 goto END;
 }
 pdata = read_file(argv[1],1); 
-
+printf("%p\n",pdata); 
 if (pdata == NULL) {
      goto END;
 }
-psy_list = calloc(1,sizeof(psy_data *));
-psy_count = psionic_divagate(pdata,get_file_size(argv[1]),psy_list); 
-
+psy_count = 0;
+//psy_list = calloc(1,sizeof(psy_data *));
+psy_list = psionic_divagate(pdata,get_file_size(argv[1]),&psy_count); 
 for(i = 0;i < psy_count; ++i) { 
 psy = psy_list[i];
-
-
 switch(psy->type) {
 
 case ZERG_MESSAGE:
@@ -46,13 +44,14 @@ default:
    break; 
 }
 printf("\t\n");
+free(psy);
 }
 
 END:
-//if(pdata != NULL)
-//free(pdata);
+free(pdata);
+//printf("%p\n",psy_list); 
 //if(psy_list != NULL)
-//free(psy_list);
+free(psy_list);
 return 0; 
 
 } 
