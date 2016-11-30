@@ -41,11 +41,13 @@ size_fixups(total_data);
 write_pcap((total_data + header_add),psize + zerg_len,"testout.pcap");
 free(total_data); 
 free(pcap_header);
+free(payload); 
+free(z_header); 
 rtok = strtok(NULL, "\t");
 psize = PCAP_SIZE - 24;
 header_add = 24;
 }
-
+free(rfile); 
 return 0; 
 
 }
