@@ -145,7 +145,6 @@ while(*ppoint != ' ') {
 ppoint++; 
 }
 ppoint++;
-printf("%s\n",ppoint); 
 for(i=0; ppoint[i] != 0;++i) {
 }
 namelen = i; 
@@ -155,7 +154,6 @@ ppoint++;
 }
 ppoint++;
 for(i=0; ppoint[i] != '/';++i) {
-printf("%x %c\n",ppoint[i],ppoint[i]);
 }
 hps = calloc(i + 1,sizeof(char)); 
 memcpy(hps,ppoint,i); 
@@ -490,9 +488,7 @@ short ip_length = IP_SIZE;
 int packet_length = ETH_SIZE + UDP_SIZE + IP_SIZE;
 char short_t[2];
 memcpy(&zerg_length,&packet[OFF_LEN + 40],sizeof(short) + 1);
-printf("zerg_length %i hex: %x\n",zerg_length,zerg_length);
 zerg_length = byte_ritual(zerg_length) >> 8;
-printf("zerg_length %i hex: %x\n",zerg_length,zerg_length);
 udp_length += zerg_length; 
 short_t[1] = udp_length;
 short_t[0] = udp_length >> 8;
@@ -502,7 +498,6 @@ short_t[1] = ip_length;
 short_t[0] = ip_length >> 8;
 memcpy(&packet[OFF_IP + 2],&short_t,sizeof(short));
 packet_length += zerg_length;
-printf("packet length %i hex: %x\n",packet_length,packet_length);
 memcpy(&packet[OFF_EPOCH + 8],&packet_length,sizeof(int));
 memcpy(&packet[OFF_EPOCH + 12],&packet_length,sizeof(int));
 }

@@ -50,20 +50,6 @@ return;
 void pcap_build_eth(char *pcap_data) { 
 
 struct eth_frame ethernet; 
-/*
-int fd; 
-struct ifreq ifr; 
-char *interface = "eth0"; 
-char *mac = NULL; 
-
-fd = socket(AF_INET, SOCK_DGRAM, 0); 
-
-ifr.ifr_addr.sa_family = AF_INET; 
-memcpy(ifr.ifr_name, interface, IFNAMESIZ - 1); 
-ioctl(fd, SIOCGIFHWADDR, &ifr);
-memcpy(ethernet.dest_mac,(unsigned char *)ifr.ifr_hwaddr.sa_data,6); 
-memcpy(ethernet.src_mac, (unsigned char *)ifr.ifr_hwaddr.sa_data,6);
-*/
 memcpy(ethernet.dest_mac,"000000",6); 
 memcpy(ethernet.src_mac,"111111",6); 
 ethernet.eth_type = 8; 
@@ -81,8 +67,7 @@ memcpy(&dat_len,(pcap_data + OFF_EPOCH  + 8),sizeof(int));
 ip_header.ver = IP_VER; 
 ip_header.hl = IP_IHL; 
 ip_header.dscp = 0x2e; //Expedited forwarding (101 Critical) 
-ip_header.tot_len =  dat_len -  ETH_SIZE; 
-printf("%i\n",ip_header.tot_len); 
+ip_header.tot_len =  dat_len -  ETH_SIZE;  
 ip_header.ident = 0; 
 ip_header.flags = 2; //DF flag set
 ip_header.offset = 0; 
