@@ -9,6 +9,10 @@ decode: $(D_OBJS)
 encode: $(E_OBJS)
 	$(CC) $(E_OBJS) -o encode
 
+debug: $(D_OBJS) $(E_OBJS)
+	$(CC) $(CFLAGS) -g $(D_OBJS) -o decode 
+	$(CC) $(CFLAGS) -g $(E_OBJS) -o encode
+	
 
 clean:
 	rm -f $(D_OBJS) $(E_OBJS) decode encode
