@@ -16,7 +16,7 @@ char *payload;
 char *total_data;
 char *pcap_header; 
 if(argc != 2) { 
-printf("%s description_file\n",argv[1]); 
+printf("%s description_file\n",argv[0]); 
 return 1;
 }
 rfile = read_file(argv[1],0);
