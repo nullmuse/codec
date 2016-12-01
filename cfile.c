@@ -95,10 +95,14 @@ fclose(fp);
 
 
 RETURN:
-//if(fp)
-//fclose(fp);
 return retdata;
 
+}
+
+void init_pcap(char *filename) { 
+if (get_file_size(filename)) {
+remove(filename); 
+}
 }
 
 

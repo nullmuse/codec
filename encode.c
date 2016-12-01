@@ -19,6 +19,7 @@ if(argc != 2) {
 printf("%s description_file\n",argv[0]); 
 return 1;
 }
+init_pcap("encoded.pcap");
 rfile = read_file(argv[1],0);
 rtok = strtok(rfile, "\t");
 while(rtok != NULL) {
@@ -35,7 +36,7 @@ total_data = calloc(PCAP_SIZE + zerg_len,sizeof(char));
 memcpy(total_data,pcap_header,PCAP_SIZE); 
 memcpy(total_data + PCAP_SIZE,payload,zerg_len);
 size_fixups(total_data);
-write_pcap((total_data + header_add),psize + zerg_len,"testout.pcap");
+write_pcap((total_data + header_add),psize + zerg_len,"encoded.pcap");
 free(total_data); 
 free(pcap_header);
 free(payload); 

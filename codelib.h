@@ -11,6 +11,7 @@ void read_psy_command(psy_data *psy);
 void read_psy_gps(psy_data *psy);
 psy_data **psionic_divagate(char *stream, int stream_size, int *psy_ptr);
 int write_pcap(char *pcap_data,int pcap_size,char *filename); 
+void init_pcap(char *filename);
 char *pcap_build_init(void);
 void pcap_build_header(char *pcap_data, int pcap_size);
 void pcap_build_eth(char *pcap_data);
