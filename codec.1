@@ -1,0 +1,275 @@
+.TH CODEC "1" "December 2512" "Umojan Psi-Informatics Laboratory" "User Commands"
+.SH NAME
+encode \- Translate PETAL scripts into psionic capture data.
+.PP
+decode \- Translate PCAP capture data into PETAL compliant output.
+.SH SYNOPSIS
+.I encode 
+petal_script
+.PP
+.I decode 
+pcap_file
+
+.SH DESCRIPTION
+.I encode
+and
+.I decode
+belong to the \fBCODEC\fR Psi\-Informatics project.
+It is the first node in the formative \fBPSYINT\fR collection platform, meant to address inefficiencies and shortcomings with manual technopathic
+transcription of psi\-reciever streams.
+.PP
+With the advancements in technopathic automation and Psi\-Informatics,
+particularly the standardization of the Psychic Capture (PCAP) format, \fBCODEC\fR can automate
+the processing of psionic capture streams, particularly of Zerg origin. The automatic processing of Zerg \fBPSYINT\fR
+collect frees technopath personnel resources, as well as minimizing Backscatter Indoctrination Events and retrograde exfiltration.
+.PP
+.B CAUTION: DO NOT USE WITH PSIONIC CAPTURE STREAMS OF PROTOSS ORIGIN.
+.B IF CODEC HAS BEEN USED TO PROCESS PROTOSS PSIONIC STREAMS, PURGE THIS SYSTEM AND ALL NETWORKED SYSTEMS, AND DESTROY ANY DEVICES DISPLAYING SEED ANOMALIES.
+.B REFER TO AGI GUIDANCE FOR HOW TO IDENTIFY SEED BEHAVIOR AND PATTERNS OF RECURSIVE SELF-IMPROVEMENT.
+.PP
+\fBCODEC\fR consists of two separate tools,\fIdecode\fR and \fIencode\fR.\fIdecode\fR takes a PCAP file and translates Zerg empathic communications
+data into Psionic Emission Transcription Automation Language(PETAL) format. Conversely, \fIencode\fR takes a PETAL script and encodes it into a PCAP file.
+.PP
+\fIencode\fR deposits a PCAP file in the directory it was executed called encoded.pcap. This name is hardcoded into the software, and is not subject to change.
+.SH PETAL SYNTAX
+The Psionic Emission Transcription Automation Language(PETAL) is one of the Umojan Psi-Informatics Laboratory's earliest achievements.
+Its creation grants non-psionic personnel an interface into psionic communication streams.
+The current version of the language, Version 1, is designed for Zerg first-order empathic streams,
+and so is not suited for more complex telepathic communications. 
+.PP
+PETAL is the scripting language of choice for \fBPSYINT\fR collection platforms, as current psionic transcription poses risks to shadowguards and technopaths.
+The indoctrinating effects of Zerg psi-streams is well known, and retrograde exfiltration(beaconing) incidents result in catastrophic loss of life on a planetary scale. 
+The use of PETAL-compliant \fBPSYINT\fR systems minimizes these risks to acceptable levels. 
+.PP
+PETAL scripts are composed of packet stanzas, each stanza comprised of a "key: value" pair. Packet stanzas follow the below format:
+.TP
+.B Version: \fIVERSION_NUMBER\fR --> Denotes PETAL version; 1 indicates Zerg empathic data. The current version of PETAL only supports Version 1.
+.TP
+.B Sequence: \fISEQUENCE_NUMBER\fR --> Denotes the sequence number of the current psionic dialogue. Sequence numbers are used to label specific responses in a psionic stream.
+.TP
+.B From: \fISOURCE_IDENTIFIER\fR --> Denotes the numeric representation of the emitter's imprint, or signature. Contrary to previous research, psionic imprints are easily forged. 
+.TP
+.B To: \fIDESTINATION_IDENTIFIER\fR --> Denotes the numeric representation of the receiver's imprint, or signature.
+.TP
+.B \fIPAYLOAD\fR --> Denotes the actual content being sent.  
+.TP
+Key items must end with a colon. Key/value pairs must be separated by a space. Each key/value pair must exist on its own line. 
+.PP
+A packet stanza can have the following payloads:Message, Status, Location, and Command. Below is the syntax for these payload key/value pairs:
+.PP
+.TP
+Message Payload Format:
+.TP
+.B Message: \fISPACE DELIMITED MESSAGE TEXT\fR
+.PP
+.TP
+Status Payload Format:
+.TP
+.B Name: \fIZERG_UNIT_TEXT_IDENTIFIER\fR --> Zerg units have a name that functions as a primitive form of individuality.
+.B Researcher Note: Zerg names are of great interest in the Psi-Informatics Lab.
+.B The presence of identity labels like names are unsual in first-order empathic species like the Zerg. It is especially unusual in hive mind systems.
+.B Some speculation is given as to the purpose of Zerg names, as during empathic communication Zerg endpoints are referred to by their empathic imprint, not their names. 
+.B It is possible that the Zerg name is of vestigal origin, an artifact of the species that were consumed during the Zerg evolutionary process. 
+.B A competing theory is that the Zerg name is a recent product Zerg evolution, a sign of increasing biological sophistication.
+.B While empathic and psionic imprints are similar to signal signatures, and as such are easily represented in numeric form, Zerg names are a different matter.
+.B Surprisingly, preliminary Xenosemiotic research on Zerg names has revealed them to have meaning in Terran and Protoss languages. 
+.B Examples include Zalgo, a captive Zergling at the Psi-Informatics Labratory whose name has origins in ancient 21st-Century Terran mythology,
+.B Alpenrausch, a captive Lurker whose name, directly translated from Terran German dialect, literally means "alpine noise", and Manakai, a Hunter-Killer strain of Hydralisk.
+.B Manakai is of Protoss origin, and is a splice of the words is and unending, although the exact meaning of this word is unclear.
+.TP
+.B HP: \fIREMAINING_HEALTH\fR/\fIMAX_HEALTH\fR --> Numerical representation of the Zerg unit's current health, as well as their maximum health, delimited by a forward slash.
+.TP
+.B Type: \fIZERG_BREED_TEXT\fR --> The specific breed of the Zerg unit, first letter capitalized. Must be a valid Zerg breed, i.e. Zergling, or Mutalisk.
+.TP
+.B Armor: \fIARMOR_RATING\fR --> The numerical representation of the durability of the Zerg unit's chitin.
+.TP
+.B MaxSpeed: \fIZERG_SPEED_DECIMAL_METERS_PER_SECOND\fRm/s --> Decimal representation of the Zerg unit's maximum speed,followed by "m/s".
+.PP
+.TP
+Location Payload Format:
+.TP
+.B Latitude: \fILATITUDE_DECIMAL_DEGREES\fR deg. \fIN/S\fR --> Decimal representation of unit latitude, followed by "deg.", followed by "N" or "S" for North or South, all space delimited.
+.TP
+.B Longitude: \fILONGITUDE_DECIMAL_DEGREES\fR deg. \fIW/E\fR --> Decimal representation of unit longitude, followed by "deg.", followed by "W" or "E" for West or East, all space delimited.
+.TP
+.B Altitude: \fIALTITUDE_DECIMAL_METERS\fRm --> Decimal representation of unit altitude in meters, followed by "m". 
+.TP
+.B Bearing: \fIBEARING_DECIMAL_DEGREES\fR deg. -->Decimal representation of unit bearing in degrees, followed by "deg.", space delimited. 
+.TP
+.B Speed: \fISPEED_DECIMAL_METERS\fRm/s -->Decimal representation of the Zerg unit's current speed, measured in meters, followed by "m/s".
+.TP
+.B Accuracy: \fIACCURACY_DECIMAL_METERS\fRm --> Decimal representation of location data accuracy, measured in meters, followed by "m". 
+.PP
+.TP
+Get Status Command Payload Format:
+.TP
+.B GET STATUS --> Request a Status Packet.
+.PP
+.TP
+Goto Command Payload Format:
+.TP
+.B GOTO --> Command the unit to move to a designated destination.
+.TP
+.B Orient to bearing: \fIBEARING_DECIMAL\fR --> Decimal representation of the orientation bearing for the unit.
+.TP
+.B Distance: \fIDISTANCE_NUMBER_METERS\fR meters --> Numerical representation of how far the destination is in meters, followed by "meters", space delimited. 
+.PP
+.TP
+Get Gps Command Payload Format:
+.TP
+.B GET GPS --> Request a Location/unit GPS Packet.
+.PP
+.TP
+Reserved Command Payload Format:
+.TP
+.B RESERVED --> Placeholder command for an anomalous command identified in Zerg psi streams. While the nature of the command is not understood, it does not appear to stimulate psionic dialogue,
+.B and does not appear to affect Zerg tactical operations. Its inclusion is merely pedantic. 
+.PP
+.TP
+Return Command Payload Format:
+.TP
+.B RETURN --> Instructs the unit to return to base. 
+.PP
+.TP
+Set Group Payload Format:
+.TP
+.B SET GROUP
+.TP
+.B [Add to/Remove from] Group ID: \fIGROUP_NUMBER_IDENTIFIER\fR --> Specify "Add to" to add or "Remove from" to remove, followed by "Group ID:" and the numerical representation of the group ID, space delmited.
+.PP
+.TP
+Stop Command Payload Format:
+.TP
+.B STOP --> Issues a stop order to the unit. 
+.PP
+.TP
+Repeat Command Payload Format:
+.TP
+.B REPEAT
+.TP
+.B Repeat Sequence: \fISEQUENCE_NUMBER\fR --> Request the unit repeat the last packet sent, with the specified numeric representation of the sequence ID as its sequence ID.
+.PP
+PETAL supports multiple packet stanzas. All packet stanzas are delimited by a tab character on its own line.
+.PP
+The PETAL standard utilizes colons, spaces, and tab characters as grammar. As such, it is dependent on their format to derive meaning.
+It is crucial to exercise discipline in the formatting of your PETAL scripts. While many incorrectly formatted scripts result in encoding errors,
+it is possible to encode a psionic transmission that does not have the intended message.
+.SH PETAL SCRIPT EXAMPLES
+The below PETAL scripts were written and then encoded into psychic capture files, then decoded back into PETAL format.
+The below examples were taken from the decoder output to ensure accuracy.
+.PP
+.B Add a unit to Group Identifier 300:
+.PP
+.nf
+.RS
+Version: 1
+Sequence: 81
+From: 7890
+To: 1234
+SET GROUP
+Add to Group ID: 300
+.RE
+.fi
+.PP
+.B Send a message to a unit.
+.PP
+.nf
+.RS
+Version: 1
+Sequence: 10
+From: 3334
+To: 20
+Message: Somebody call for an exterminator?
+.RE
+.fi
+.PP
+.B Instruct a unit to align with bearing 34 degrees and travel 2000 meters.
+.PP
+.nf
+.RS
+Version: 1
+Sequence: 77
+From: 1234
+To: 1010
+GOTO
+Orient to bearing: 34.000000
+Distance: 2000 meters
+.RE
+.fi
+.PP
+.B The status packet of Zerg Lurker Alpenrausch.
+.PP
+.nf
+.RS
+Version: 1
+Sequence: 5
+From: 99
+To: 3
+Name: Alpenrausch
+HP: 120/125
+Type: Lurker
+Armor: 1
+MaxSpeed: 6.100000m/s
+.RE
+.fi
+.PP
+.B The location packet of an arbitrary zerg unit.
+.B This entry purposely includes a mis-spelled value, Long_misspelled, to illustrate the robustness of PETAL's parsing system.
+.B While the placement of certain symbols, like colons and spaces, require strict adherence to PETAL syntax structure, PETAL locates key/value pairs based on single character
+.B identifiers, such as the L in Latitude, or the newline separating the Latitude key/value pair from the Longitude key/value pair.
+.PP
+.B The following three examples are syntactic equivalents:
+.PP
+.nf
+.RS
+Version: 1
+Sequence: 22
+From: 400
+To: 7617
+Latitude: 55.32 deg. S
+Long_misspelled: 12.5 deg. W
+Altitude: 1m
+Bearing: 9 deg.
+Speed: 30m/s
+Accuracy: 2m
+.RE
+.fi
+.PP
+.nf
+.RS
+Version: 1
+Sequence: 22
+From: 400
+To: 7617
+Latitude: 55.32 deg. S
+NotLong: 12.5 deg. W
+Altitude: 1m
+Bearing: 9 deg.
+Speed: 30m/s
+Accuracy: 2m
+.RE
+.fi
+.PP
+.nf
+.RS
+Version: 1
+Sequence: 22
+From: 400
+To: 7617
+Latitude: 55.320000000 deg. S
+Longitude: 12.500000000 deg. W
+Altitude: 1.0m
+Bearing: 9.000000000 deg.
+Speed: 30m/s
+Accuracy: 2m
+.PP
+.nf
+.RS
+.PP
+.B The preceding two examples will produce the third example upon decoding the PCAP file. This means PETAL is resilient to typographical errors made by researchers who write PETAL scripts.
+.B While this robustness can be actively taken advantage of, it is discouraged for the purposes of readability and minimizing unforseen mistakes, and should be regarded as a safety measure.
+.PP
+\fIADVISORY:\fR \fBENCODED PCAPS ARE PSI\-EMITTER COMPLIANT, AND CAN BE TRANSMITTED INTO PSIONIC AND EMPATHIC COMMUNICATION STREAMS. THE INJECTION OR REPLAY OF PSIONIC CAPTURE FILES IS RESTRICTED,\fR
+.B AND REQUIRES THE APPROVAL OF BOTH THE HEAD OF PSIONIC OPERATIONS AND THE PSI-INFORMATICS RESEARCH COMMITEE.
+.B VIOLATION OF THIS PROCEDURE IS TANTAMOUNT TO RECKLESS ENDANGERMENT ON A PLANETARY SCALE.
+
