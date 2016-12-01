@@ -20,3 +20,5 @@ void pcap_build_udp(char *pcap_data);
 zerg_header *transmute_input(char *pdata);
 char *zerg_type_encoder(zerg_header *z_header, char *data, int *tot_len);
 void size_fixups(char *packet);
+int petal_handler(char *petal, int petal_size);
+int petal_interpreter(char *petal, int petal_size,int *line);

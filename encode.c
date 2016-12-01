@@ -21,6 +21,10 @@ return 1;
 }
 init_pcap("encoded.pcap");
 rfile = read_file(argv[1],0);
+if(petal_handler(rfile,get_file_size(argv[1]))) { 
+free(rfile); 
+return 1;
+}
 rtok = strtok(rfile, "\t");
 while(rtok != NULL) {
 if(!strcmp(rtok,"\n"))
