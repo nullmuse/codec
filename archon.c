@@ -323,9 +323,7 @@ ppoint += 16;
 if(psy_count == 0) {
 psy_list = calloc(psy_count + 1,sizeof(psy_data *));
 header_pointer = transmute_header(ppoint);
-printf("before memcpy\n");
 memcpy(&psy_list[psy_count],&header_pointer,sizeof(psy_data *)); 
-printf("after memcpy\n"); 
 psy_count++; 
 }
 else {
