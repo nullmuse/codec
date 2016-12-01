@@ -191,8 +191,9 @@ ppoint++;
 for(i = 0; ppoint[i] != 0xa;++i) {
 }
 arm = calloc(i + 1,sizeof(char)); 
+memcpy(arm,ppoint,i);
 zerg.ac = transmute_char(arm);
-free(arm);   
+free(arm);
 while(*ppoint != 0 && *ppoint != ' ') { 
 ppoint++;
 }

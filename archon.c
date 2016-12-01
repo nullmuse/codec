@@ -75,11 +75,12 @@ return;
 
 void read_psy_status(psy_data *psy) { 
 
-int hp,max_hp,ac,type,spp;
+int hp,max_hp,type,spp;
+char ac;
 float sp;
 char *name;
 hp = psy->payload[STAT_HP];
-ac = htons(psy->payload[STAT_AC]);
+ac = psy->payload[STAT_AC];
 max_hp = psy->payload[STAT_HP_MAX];
 type = psy->payload[STAT_TYPE];
 memcpy(&spp,&psy->payload[STAT_SP],sizeof(int));
