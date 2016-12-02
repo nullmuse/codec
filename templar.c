@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int transmute_char(char *subject) {
+int transmuteChar(char *subject) {
    int len = strlen(subject) - 1;
    int i,new = 0;
 
@@ -16,7 +16,7 @@ int transmute_char(char *subject) {
  }
 
 
-float float_ritual(int object) {
+float floatRitual(int object) {
 //Below is to make compiler happy
 object = object;
 __asm__(".intel_syntax noprefix");
@@ -30,7 +30,7 @@ __asm__(".att_syntax noprefix");
 return object;
 }
 
-double double_ritual(unsigned long object) {
+double doubleRitual(unsigned long object) {
 //Below is to make compiler happy
 object = object;
 __asm__(".intel_syntax noprefix");
@@ -46,7 +46,7 @@ return object;
 
 
 
-int byte_ritual(int object) {
+int byteRitual(int object) {
 //Below is to make compiler happy
 object = object;
 __asm__(".intel_syntax noprefix");
@@ -61,7 +61,7 @@ return object;
 
 
 
-unsigned long long_ritual(unsigned long object) {
+unsigned long longRitual(unsigned long object) {
 //Below is to make compiler happy
 object = object;
 __asm__(".intel_syntax noprefix");

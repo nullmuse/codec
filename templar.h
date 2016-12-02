@@ -1,5 +1,5 @@
-float float_ritual(int object);
-double double_ritual(unsigned long object);
-int byte_ritual(int object);
-unsigned long long_ritual(unsigned long object);
-int transmute_char(char *subject);
+float floatRitual(int object);
+double doubleRitual(unsigned long object);
+int byteRitual(int object);
+unsigned long longRitual(unsigned long object);
+int transmuteChar(char *subject);

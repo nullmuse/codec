@@ -1,24 +1,24 @@
-#include "zerglib.h"
-
-int validate_file(FILE *fp); 
-char *read_file(char *fname, int is_pcap); 
-int write_pcap(char *pcap_data,int pcap_size,char *filename);
-int get_file_size(char *fname);
-psy_data *transmute_header(char *pdata); 
-void read_psy_message(psy_data *psy);
-void read_psy_status(psy_data *psy);
-void read_psy_command(psy_data *psy);
-void read_psy_gps(psy_data *psy);
-psy_data **psionic_divagate(char *stream, int stream_size, int *psy_ptr);
-int write_pcap(char *pcap_data,int pcap_size,char *filename); 
-void init_pcap(char *filename);
-char *pcap_build_init(void);
-void pcap_build_header(char *pcap_data, int pcap_size);
-void pcap_build_eth(char *pcap_data);
-void pcap_build_iph(char *pcap_data);
-void pcap_build_udp(char *pcap_data); 
-zerg_header *transmute_input(char *pdata);
-char *zerg_type_encoder(zerg_header *z_header, char *data, int *tot_len);
-void size_fixups(char *packet);
-int petal_handler(char *petal, int petal_size);
-int petal_interpreter(char *petal, int petal_size,int *line);
+ #include "zerglib.h"
+ 
+ int validateFile(FILE *fp); 
+ char *readFile(char *fname, int ispcap); 
+ int writePcap(char *pcapdata,int pcapsize,char *filename);
+ int getFileSize(char *fname);
+ psyData *transmuteHeader(char *pdata); 
+ void readPsyMessage(psyData *psy);
+ void readPsyStatus(psyData *psy);
+ void readPsyCommand(psyData *psy);
+ void readPsyGps(psyData *psy);
+ psyData **psionicDivagate(char *stream, int streamsize, int *psyptr);
+ int writePcap(char *pcapdata,int pcapsize,char *filename); 
+ void initPcap(char *filename);
+ char *pcapBuildInit(void);
+ void pcapBuildHeader(char *pcapdata, int pcapsize);
+ void pcapBuildEth(char *pcapdata);
+ void pcapBuildIph(char *pcapdata);
+ void pcapBuildUdp(char *pcapdata); 
+ zergHeader *transmuteInput(char *pdata);
+ char *zergTypeEncoder(zergHeader *zheader, char *data, int *totlen);
+ void sizeFixups(char *packet);
+ int petalHandler(char *petal, int petalsize);
+ int petalInterpreter(char *petal, int petalsize,int *line);

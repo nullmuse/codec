@@ -1,101 +1,101 @@
-#include <stdio.h> 
-#include <stdlib.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <sys/ioctl.h> 
-#include <sys/time.h>
-#include <net/if.h> 
-#include <unistd.h> 
-#include "pcap.h"
-#include "codelib.h"
-
-
-char *pcap_build_init(void) { 
-char *pcap_header = calloc(PCAP_SIZE, sizeof(char));
-struct pcap_header_f file_header; 
-
-file_header.major_version = MJ_VER;
-file_header.minor_version = MN_VER; 
-file_header.gmt_offset = 0; 
-file_header.acc_delta = 0; 
-file_header.maxlen = 65536; 
-file_header.link_type = 1; 
+ #include <stdio.h> 
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/socket.h>
+ #include <sys/ioctl.h> 
+ #include <sys/time.h>
+ #include <net/if.h> 
+ #include <unistd.h> 
+ #include "pcap.h"
+ #include "codelib.h"
  
-
-memcpy(pcap_header,psychic_header,HEADER_SIZE); 
-
-memcpy((pcap_header + OFF_MJVER),&file_header,sizeof(struct pcap_header_f)); 
-
-return pcap_header; 
-
-} 
-
-
-void pcap_build_header(char *pcap_data, int pcap_size) { 
-
-struct pcap_header_p p_header; 
-struct timeval tv; 
-gettimeofday(&tv,NULL); 
-p_header.epoch = tv.tv_sec; 
-p_header.epoch_us = tv.tv_usec;
-p_header.data_len = pcap_size + ETH_SIZE + IP_SIZE + UDP_SIZE; 
-p_header.packet_len = pcap_size + ETH_SIZE + IP_SIZE + UDP_SIZE;
-memcpy((pcap_data + OFF_EPOCH),&p_header,sizeof(struct pcap_header_p));
-
-return; 
-
-}
-
-
-void pcap_build_eth(char *pcap_data) { 
-
-struct eth_frame ethernet; 
-memcpy(ethernet.dest_mac,"000000",6); 
-memcpy(ethernet.src_mac,"111111",6); 
-ethernet.eth_type = 8; 
-memcpy((pcap_data + OFF_DMAC),&ethernet,sizeof(struct eth_frame));
-
-return; 
-
-}
-
-void pcap_build_iph(char *pcap_data) { 
-
-struct ip4_header ip_header; 
-int dat_len; 
-memcpy(&dat_len,(pcap_data + OFF_EPOCH  + 8),sizeof(int)); 
-ip_header.ver = IP_VER; 
-ip_header.hl = IP_IHL; 
-ip_header.dscp = 0x2e; //Expedited forwarding (101 Critical) 
-ip_header.tot_len =  dat_len -  ETH_SIZE;  
-ip_header.ident = 0; 
-ip_header.flags = 2; //DF flag set
-ip_header.offset = 0; 
-ip_header.ttl = 4; //arbitrary 
-ip_header.protocol = 17;  //UDP 
-ip_header.checksum = 0; 
-ip_header.src_ip = 12345678; 
-ip_header.dest_ip = 87654321; 
  
-
-memcpy((pcap_data + OFF_IP),&ip_header,sizeof(struct ip4_header));
-
-return; 
-
-}
-
-void pcap_build_udp(char *pcap_data) { 
-
-struct udp_header udp_head; 
-int dat_len;
-memcpy(&dat_len,(pcap_data + OFF_EPOCH  + 8),sizeof(int));
-udp_head.src_port = 1337; 
-udp_head.dest_port = UDP_PORT; 
-udp_head.len = dat_len - ETH_SIZE - IP_SIZE; 
-udp_head.checksum = 0; 
-
-memcpy((pcap_data + OFF_UDP),&udp_head,sizeof(struct udp_header));
-
-return; 
-}
-
+ char *pcapBuildInit(void) { 
+    char *pcapHeader = calloc(PCAP_SIZE, sizeof(char));
+    struct pcapHeaderF fileHeader; 
+    
+    fileHeader.majorVersion = MJ_VER;
+    fileHeader.minorVersion = MN_VER; 
+    fileHeader.gmtOffset = 0; 
+    fileHeader.accDelta = 0; 
+    fileHeader.maxLen = 65536; 
+    fileHeader.linkType = 1; 
+     
+    
+    memcpy(pcapHeader,psychicHeader,HEADER_SIZE); 
+    
+    memcpy((pcapHeader + OFF_MJ_VER),&fileHeader,sizeof(struct pcapHeaderF)); 
+    
+    return pcapHeader; 
+    
+    } 
+ 
+ 
+ void pcapBuildHeader(char *pcapData, int pcapSize) { 
+    
+    struct pcapHeaderP pHeader; 
+    struct timeval tv; 
+    gettimeofday(&tv,NULL); 
+    pHeader.epoch = tv.tv_sec; 
+    pHeader.epochUs = tv.tv_usec;
+    pHeader.dataLen = pcapSize + ETH_SIZE + IP_SIZE + UDP_SIZE; 
+    pHeader.packetLen = pcapSize + ETH_SIZE + IP_SIZE + UDP_SIZE;
+    memcpy((pcapData + OFF_EPOCH),&pHeader,sizeof(struct pcapHeaderP));
+    
+    return; 
+    
+    }
+ 
+ 
+ void pcapBuildEth(char *pcapData) { 
+    
+    struct ethFrame ethernet; 
+    memcpy(ethernet.destMac,"000000",6); 
+    memcpy(ethernet.srcMac,"111111",6); 
+    ethernet.ethType = 8; 
+    memcpy((pcapData + OFF_DMAC),&ethernet,sizeof(struct ethFrame));
+    
+    return; 
+    
+    }
+ 
+ void pcapBuildIph(char *pcapData) { 
+    
+    struct ip4Header ipHeader; 
+    int datLen; 
+    memcpy(&datLen,(pcapData + OFF_EPOCH  + 8),sizeof(int)); 
+    ipHeader.ver = IP_VER; 
+    ipHeader.hl = IP_IHL; 
+    ipHeader.dscp = 0x2e; //Expedited forwarding (101 Critical) 
+    ipHeader.totLen =  datLen -  ETH_SIZE;  
+    ipHeader.ident = 0; 
+    ipHeader.flags = 2; //DF flag set
+    ipHeader.offset = 0; 
+    ipHeader.ttl = 4; //arbitrary 
+    ipHeader.protocol = 17;  //UDP 
+    ipHeader.checksum = 0; 
+    ipHeader.srcIp = 12345678; 
+    ipHeader.destIp = 87654321; 
+     
+    
+    memcpy((pcapData + OFF_IP),&ipHeader,sizeof(struct ip4Header));
+    
+    return; 
+    
+    }
+ 
+ void pcapBuildUdp(char *pcapData) { 
+    
+    struct udpHeader udpHead; 
+    int datLen;
+    memcpy(&datLen,(pcapData + OFF_EPOCH  + 8),sizeof(int));
+    udpHead.srcPort = 1337; 
+    udpHead.destPort = UDP_PORT; 
+    udpHead.len = datLen - ETH_SIZE - IP_SIZE; 
+    udpHead.checksum = 0; 
+    
+    memcpy((pcapData + OFF_UDP),&udpHead,sizeof(struct udpHeader));
+    
+    return; 
+    }
+ 
