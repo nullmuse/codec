@@ -62,12 +62,12 @@
     message = calloc(messageSize + 1,sizeof(char)); 
     memcpy(message,psy->payload,messageSize); 
     printf("\
-    Version: %i\n\
-    Sequence: %i\n\
-    From: %i\n\
-    To: %i\n\
-    Message: %s\n\
-    ",psy->version,psy->sequence,psy->sourceId,psy->destId,message);
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+Message: %s\n\
+",psy->version,psy->sequence,psy->sourceId,psy->destId,message);
     
     free(message);
     return;
@@ -88,16 +88,16 @@
     sp = floatRitual(spp);
     name = &psy->payload[STAT_NAME];
     printf("\
-    Version: %i\n\
-    Sequence: %i\n\
-    From: %i\n\
-    To: %i\n\
-    Name: %s\n\
-    HP: %i/%i\n\
-    Type: %s\n\
-    Armor: %i\n\
-    MaxSpeed: %fm/s\n\
-    ",psy->version,psy->sequence,psy->sourceId,psy->destId,name,hp,maxHp,zergBreeds[type],ac,sp);
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+Name: %s\n\
+HP: %i/%i\n\
+Type: %s\n\
+Armor: %i\n\
+MaxSpeed: %fm/s\n\
+",psy->version,psy->sequence,psy->sourceId,psy->destId,name,hp,maxHp,zergBreeds[type],ac,sp);
     
     
     
@@ -120,12 +120,12 @@
     
     case GET_STATUS:
     printf("\
-    Version: %i\n\
-    Sequence: %i\n\
-    From: %i\n\
-    To: %i\n\
-    GET STATUS\n\
-    ",psy->version,psy->sequence,psy->sourceId,psy->destId); 
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+GET STATUS\n\
+",psy->version,psy->sequence,psy->sourceId,psy->destId); 
        break; 
     case GOTO:
     memcpy(&bearInt,&psy->payload[COMM_PARAM2],sizeof(int)); 
@@ -134,42 +134,42 @@
     memcpy(&meters,&psy->payload[COMM_PARAM1],sizeof(short));
     meters = ntohs(meters); 
     printf("\
-    Version: %i\n\
-    Sequence: %i\n\
-    From: %i\n\
-    To: %i\n\
-    GOTO\n\
-    Orient to Bearing: %f\n\
-    Distance: %i meters\n\
-    ",psy->version,psy->sequence,psy->sourceId,psy->destId,bearFloat,meters);
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+GOTO\n\
+Orient to Bearing: %f\n\
+Distance: %i meters\n\
+",psy->version,psy->sequence,psy->sourceId,psy->destId,bearFloat,meters);
     
        break; 
     case GET_GPS:
     printf("\
-    Version: %i\n\
-    Sequence: %i\n\
-    From: %i\n\
-    To: %i\n\
-    GET GPS\n\
-    ",psy->version,psy->sequence,psy->sourceId,psy->destId);
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+GET GPS\n\
+",psy->version,psy->sequence,psy->sourceId,psy->destId);
        break; 
     case RESERVED:
     printf("\
-    Version: %i\n\
-    Sequence: %i\n\
-    From: %i\n\
-    To: %i\n\
-    RESERVED\n\
-    ",psy->version,psy->sequence,psy->sourceId,psy->destId);
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+RESERVED\n\
+",psy->version,psy->sequence,psy->sourceId,psy->destId);
        break;
     case RETURN:
     printf("\
-    Version: %i\n\
-    Sequence: %i\n\
-    From: %i\n\
-    To: %i\n\
-    RETURN\n\
-    ",psy->version,psy->sequence,psy->sourceId,psy->destId);
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+RETURN\n\
+",psy->version,psy->sequence,psy->sourceId,psy->destId);
        break; 
     case SET_GROUP:
     memcpy(&groupId,&psy->payload[COMM_PARAM2],sizeof(int)); 
@@ -177,35 +177,35 @@
     isAdd = htons(isAdd); 
     groupId = byteRitual(groupId); 
     printf("\
-    Version: %i\n\
-    Sequence: %i\n\
-    From: %i\n\
-    To: %i\n\
-    SET GROUP\n\
-    %s Group ID: %i\n\
-    ",psy->version,psy->sequence,psy->sourceId,psy->destId,addRemove[isAdd],groupId);
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+SET GROUP\n\
+%s Group ID: %i\n\
+",psy->version,psy->sequence,psy->sourceId,psy->destId,addRemove[isAdd],groupId);
     
        break; 
     case STOP:
     printf("\
-    Version: %i\n\
-    Sequence: %i\n\
-    From: %i\n\
-    To: %i\n\
-    STOP\n\
-    ",psy->version,psy->sequence,psy->sourceId,psy->destId);
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+STOP\n\
+",psy->version,psy->sequence,psy->sourceId,psy->destId);
        break;
     case REPEAT:
     memcpy(&repseq,&psy->payload[COMM_PARAM2],sizeof(int));
     repseq = byteRitual(repseq); 
     printf("\
-    Version: %i\n\
-    Sequence: %i\n\
-    From: %i\n\
-    To: %i\n\
-    REPEAT\n\
-    Repeat Sequence: %i\n\
-    ",psy->version,psy->sequence,psy->sourceId,psy->destId,repseq);
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+REPEAT\n\
+Repeat Sequence: %i\n\
+",psy->version,psy->sequence,psy->sourceId,psy->destId,repseq);
        break;
     default:
        printf("Unrecognized command in command packet\n"); 
@@ -263,17 +263,17 @@
     }
  
  printf("\
- Version: %i\n\
- Sequence: %i\n\
- From: %i\n\
- To: %i\n\
- Latitude: %2.9f deg. %c\n\
- Longitude: %2.9f deg. %c\n\
- Altitude: %2.1fm\n\
- Bearing: %2.9f deg.\n\
- Speed: %.0fm/s\n\
- Accuracy: %.0fm\n\
- ",psy->version,psy->sequence,psy->sourceId,psy->destId,fLat,ns,fLong,we,fAlt,fBear,fSp,fAc);
+Version: %i\n\
+Sequence: %i\n\
+From: %i\n\
+To: %i\n\
+Latitude: %2.9f deg. %c\n\
+Longitude: %2.9f deg. %c\n\
+Altitude: %2.1fm\n\
+Bearing: %2.9f deg.\n\
+Speed: %.0fm/s\n\
+Accuracy: %.0fm\n\
+",psy->version,psy->sequence,psy->sourceId,psy->destId,fLat,ns,fLong,we,fAlt,fBear,fSp,fAc);
  
  
  
