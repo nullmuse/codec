@@ -235,10 +235,10 @@
  for(k = 0;k < 8;++k) {
     if(!strncmp(pPoint,ZERG_COMMANDS[k],i)) {
       command.command = htons(k);
+      break;
        }
    }
   
-
  switch(k) { 
     case 1:
     pPoint += (i + 1);
@@ -261,7 +261,7 @@
     pPoint++;
     }
  pPoint++; 
- for(i = 0; pPoint[i] != ' ';++i) {
+ for(i = 0; pPoint[i] != 0xa;++i) {
     }
  paramStr = calloc(i + 1,sizeof(char));
  memcpy(paramStr,pPoint,i);
