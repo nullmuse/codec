@@ -75,10 +75,15 @@ Message: %s\n\
  
  void readPsyStatus(psyData *psy) { 
     
-    int hp,maxHp,type,spp;
+    int hp,maxHp,type,spp,nameLen;
     char ac;
     float sp;
     char *name;
+    nameLen =(psy->length) - PSYHDRSZ; 
+    printf("Current nameLen %i\n",nameLen);
+    nameLen -= 12; 
+    printf("Final nameLen %i\n",nameLen); 
+    name = calloc(nameLen + 1,sizeof(char));  
     hp = psy->payload[STAT_HP];
     ac = psy->payload[STAT_AC];
     maxHp = psy->payload[STAT_HP_MAX];
@@ -86,7 +91,7 @@ Message: %s\n\
     memcpy(&spp,&psy->payload[STAT_SP],sizeof(int));
     spp = byteRitual(spp); 
     sp = floatRitual(spp);
-    name = &psy->payload[STAT_NAME];
+    memcpy(name,&psy->payload[STAT_NAME],nameLen);
     printf("\
 Version: %i\n\
 Sequence: %i\n\
@@ -100,7 +105,7 @@ MaxSpeed: %fm/s\n\
 ",psy->version,psy->sequence,psy->sourceId,psy->destId,name,hp,maxHp,zergBreeds[type],ac,sp);
     
     
-    
+    free(name);
     return; 
     
     } 
