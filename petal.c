@@ -20,7 +20,6 @@
 
 int interpretMessage(char *petalMessage) { 
  int i;
- printf("Entering interpretMessage\n");
  int messageLength = 0;
  i = strlen(messageStanza[0]); 
  for(;petalMessage[i] != 0xa;++i) {
@@ -31,7 +30,6 @@ int interpretMessage(char *petalMessage) {
  return VALID_PETAL_SCRIPT;
  }
 int interpretStatus(char *petalStatus, int *lineNo) {
-printf("Entering interpretStatus\n");
 int k,m,localLineNo;
 int i = 0;
 int messageLength = 0;
@@ -42,14 +40,12 @@ if(strncmp(&petalStatus[i],statusStanza[k],strlen(statusStanza[k]))) {
           memcpy(lineNo,&localLineNo,sizeof(int));
           return INVALID_PETAL_SCRIPT;
           }
-printf("k iteration %i\n",k); 
 canary = 0;
 if(k == 1 || k == 2 || k == 4) {
 canary = -1;
 }
 messageLength = 0;
 for(;petalStatus[i] != 0xa;++i) {
-printf("rolling %c %x\n",petalStatus[i],petalStatus[i]);
 if(k == 1 && petalStatus[i] == '/') {
 canary = 0;
 }
@@ -90,10 +86,8 @@ return VALID_PETAL_SCRIPT;
 
 int interpretGps(char *petalGps, int *lineNo) { 
 
-printf("Entering interpretGps\n");
-int k,m,localLineNo;
+int k,localLineNo;
 int i = 0;
-int messageLength = 0;
 int savePoint = 0;
 localLineNo = *lineNo;
 for(k = 0;k < 6;++k) { 
@@ -101,8 +95,6 @@ if(strncmp(&petalGps[i],gpsStanza[k],strlen(gpsStanza[k]))) {
           memcpy(lineNo,&localLineNo,sizeof(int));
           return INVALID_PETAL_SCRIPT;
           }
-printf("k iteration %i\n",k);
-messageLength = 0;
 for(;petalGps[i] != 0xa;++i) {
 }
 switch(k) { 
@@ -164,9 +156,93 @@ savePoint = i;
 return VALID_PETAL_SCRIPT; 
 }
 
+
+int interpretCommand(char *petalCommand, int *lineNo, int command) { 
+int localLineNo;
+int i = 0;
+int savePoint = 0;
+localLineNo = *lineNo;
+for(;petalCommand[i] != 0xa;++i) {
+}
+i++; 
+localLineNo++; 
+switch(command) {
+case 1:
+if(strncmp(&petalCommand[i],commandTokens[0],strlen(commandTokens[0]))) {
+memcpy(lineNo,&localLineNo,sizeof(int));
+          return INVALID_PETAL_SCRIPT;
+}
+for(;petalCommand[i] != 0xa;++i) {
+}
+
+if(petalCommand[i - 1] == ' ') { 
+memcpy(lineNo,&localLineNo,sizeof(int));
+          return INVALID_PETAL_SCRIPT;
+}
+i++;
+localLineNo++;
+if(strncmp(&petalCommand[i],commandTokens[1],strlen(commandTokens[1]))) {
+memcpy(lineNo,&localLineNo,sizeof(int));
+          return INVALID_PETAL_SCRIPT;
+}
+savePoint = i;
+for(;petalCommand[i] != 0xa;++i) {
+if(petalCommand[i] == 'm' && petalCommand[i - 2] == ' ') { 
+memcpy(lineNo,&localLineNo,sizeof(int));
+          return INVALID_PETAL_SCRIPT;
+}
+}
+
+if(memmem(&petalCommand[savePoint],(i - savePoint),commandTokens[2],strlen(commandTokens[2])) == NULL) {
+memcpy(lineNo,&localLineNo,sizeof(int));
+      return INVALID_PETAL_SCRIPT;
+}
+
+break;
+case 5:
+for(;petalCommand[i] != 0xa;++i) {
+}
+i++;
+localLineNo++;
+if(strncmp(&petalCommand[i],commandTokens[3],strlen(commandTokens[3]))) {
+if(strncmp(&petalCommand[i],commandTokens[4],strlen(commandTokens[4]))) {
+memcpy(lineNo,&localLineNo,sizeof(int));
+      return INVALID_PETAL_SCRIPT;
+}
+}
+for(;petalCommand[i] != 0xa;++i) {
+}
+if(petalCommand[i - 1] == ' ') { 
+memcpy(lineNo,&localLineNo,sizeof(int));
+      return INVALID_PETAL_SCRIPT;
+}
+break;
+case 7:
+for(;petalCommand[i] != 0xa;++i) {
+}
+i++;
+localLineNo++;
+if(strncmp(&petalCommand[i],commandTokens[5],strlen(commandTokens[5]))) {
+memcpy(lineNo,&localLineNo,sizeof(int));
+      return INVALID_PETAL_SCRIPT;
+}
+
+for(;petalCommand[i] != 0xa;++i) {
+}
+if(petalCommand[i - 1] == ' ') {
+memcpy(lineNo,&localLineNo,sizeof(int));
+      return INVALID_PETAL_SCRIPT;
+}
+break;
+}
+
+return VALID_PETAL_SCRIPT;
+}
+
+
  int checkStanzaSignature(char *petalSignature,int *lineNo) { 
-   printf("Entering checkStanzaSignature()\n");
-   int errType = 0;
+   int errType = VALID_PETAL_SCRIPT;
+   int i;
     switch(petalSignature[0]) { 
        case 'M':
           if(strncmp(petalSignature,messageStanza[0],strlen(messageStanza[0]))) {
@@ -187,14 +263,23 @@ return VALID_PETAL_SCRIPT;
           errType = interpretGps(petalSignature,lineNo);
           break;
        default:
-          printf("Default case found\n");
-          if(strncmp(petalSignature,zergCommands[0],strlen(zergCommands[0]))) {
+          for(i = 0; i < 8; ++i) {
+          if(!strncmp(petalSignature,zergCommands[i],strlen(zergCommands[i]))) {
+          break;
+          }
+          }
+          if(i > 7) { 
           return INVALID_PETAL_SCRIPT;
+          }
+          if(i == 1 || i == 5 || i == 7) { 
+          errType = interpretCommand(petalSignature,lineNo,i);
           }
           break;
     }
     return errType;
 }
+
+
 
  int petalInterpreter(char *petal, int petalSize,int *line) { 
  int errType = 0;

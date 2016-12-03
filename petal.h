@@ -17,7 +17,17 @@
   " E", 
   "m/s",
   "m"
-}; 
+};
+
+static const char *commandTokens[] = { 
+"Orient to Bearing: ",
+"Distance: ",
+" meters",
+"Add to Group ID: ",
+"Remove from Group ID: ",
+"Repeat Sequence: "
+};
+ 
  static const char *zergCommands[] = {"GET STATUS","GOTO","GET GPS","RESERVED","RETURN","SET GROUP","STOP","REPEAT"};
  
  static const char *zergBreeds[] = {
