@@ -2,59 +2,156 @@
  #include <stdlib.h>
  #include <string.h>
  #include "petal.h"
- 
- 
- int petalInterpreter(char *petal, int petalSize,int *line) { 
-    
-    char *strs[] = {"Version: ","Sequence: ","From: ","To: "};
+
+
+ int advanceInterpreter(int i, int petalSize, char *petal) {
+    for(;i < petalSize && petal[i] != 0xa; ++i) {
+    }
+ if(i == petalSize) {
+    return INVALID_PETAL_SCRIPT;
+    }
+    i++;
+    return i; 
+    } 
+
+int interpretMessage(char *petalMessage) { 
  int i;
+ int messageLength = 0;
+ i = strlen(messageStanza[0]); 
+ for(;petalMessage[i] != 0xa;++i) {
+ messageLength++;
+ }
+ if(messageLength < 1)
+    return INVALID_PETAL_SCRIPT;
+ return VALID_PETAL_SCRIPT;
+ }
+int interpretStatus(char *petalStatus, int *lineNo) {
+int k,m,localLineNo;
+int i = 0;
+int messageLength = 0;
+localLineNo = *lineNo;
+int canary;
+for(k = 0;k < 5;++k) {
+canary = 0;
+if(k == 1 || k == 2 || k == 4) {
+canary = -1;
+}
+messageLength = 0;
+for(;petalStatus[i] != 0xa;++i) {
+if(k == 1 && petalStatus[i] == '/') {
+canary = 0;
+}
+if(k == 2 && petalStatus[(i - 1)] == ' ') { 
+for(m = 0; m < 15; ++m) { 
+if(!strncmp(&petalStatus[i],zergBreeds[m],strlen(zergBreeds[m]))) { 
+canary = 0; 
+}
+}
+}
+if(k == 4) { 
+if(!strncmp(&petalStatus[i],"m/s",3)) { 
+canary = 0; 
+} 
+
+messageLength++;
+}
+}
+++i;
+localLineNo++;
+if(strncmp(&petalStatus[i],statusStanza[k],strlen(statusStanza[k]))) {
+          memcpy(lineNo,&localLineNo,sizeof(int));
+          return INVALID_PETAL_SCRIPT;
+          }
+if(messageLength - strlen(statusStanza[k]) == 0) {
+          localLineNo--;
+          memcpy(lineNo,&localLineNo,sizeof(int));
+          return INVALID_PETAL_SCRIPT;
+}
+if(canary < 0) { 
+          localLineNo--;
+          memcpy(lineNo,&localLineNo,sizeof(int));
+          return INVALID_PETAL_SCRIPT;
+}
+}
+return VALID_PETAL_SCRIPT;
+}
+
+
+
+
+
+ int checkStanzaSignature(char *petalSignature) { 
+    switch(petalSignature[0]) { 
+       case 'M':
+          if(strncmp(petalSignature,messageStanza[0],strlen(messageStanza[0]))) {
+          return INVALID_PETAL_SCRIPT;
+          }
+          break;
+       case 'N':
+          if(strncmp(petalSignature,statusStanza[0],strlen(statusStanza[0]))) {
+          return INVALID_PETAL_SCRIPT;
+          }
+          break;
+       case 'L':
+          if(strncmp(petalSignature,gpsStanza[0],strlen(gpsStanza[0]))) {
+          return INVALID_PETAL_SCRIPT;
+          }
+          break;
+       default:
+          if(strncmp(petalSignature,zergCommands[0],strlen(zergCommands[0]))) {
+          return INVALID_PETAL_SCRIPT;
+          }
+          break;
+    }
+    return VALID_PETAL_SCRIPT;
+}
+
+ int petalInterpreter(char *petal, int petalSize,int *line) { 
+ int errType = 0;
+ char *strs[] = {"Version: ","Sequence: ","From: ","To: "};
+ int i = 0;
  int lineNo = 0;
+ const char **stanzaList = NULL;
  if(strncmp(strs[0],petal,strlen(strs[0]))) {
     lineNo = 0;
     memcpy(line,&lineNo,sizeof(int)); 
-    return INVALID_PETAL_STANZA_VER; 
+    return INVALID_PETAL_STANZA_VER;
     }
- for(i = 0;i < petalSize && petal[i] != 0xa; ++i) {
-    }
- if(i == petalSize) { 
-    return INVALID_PETAL_SCRIPT;
-    }
- ++i;
+ i = advanceInterpreter(i,petalSize,petal);
+ if(i < 0)
+ return INVALID_PETAL_SCRIPT;
  lineNo = 1;
  if(strncmp(strs[1],&petal[i],strlen(strs[1]))) {
     memcpy(line,&lineNo,sizeof(int));
     return INVALID_PETAL_STANZA_SEQ;
     }
- for(;i < petalSize && petal[i] != 0xa; ++i) {
-    }
- if(i == petalSize) {
-    return INVALID_PETAL_SCRIPT;
-    }
- ++i;
+ i = advanceInterpreter(i,petalSize,petal);
+ if(i < 0)
+ return INVALID_PETAL_SCRIPT;
  lineNo++;
  if(strncmp(strs[2],&petal[i],strlen(strs[2]))) {
     memcpy(line,&lineNo,sizeof(int));
     return INVALID_PETAL_STANZA_SID;
     }
- for(;i < petalSize && petal[i] != 0xa; ++i) {
-    }
- if(i == petalSize) {
-    return INVALID_PETAL_SCRIPT;
-    }
- ++i;
+ i = advanceInterpreter(i,petalSize,petal);
+ if(i < 0)
+ return INVALID_PETAL_SCRIPT;
  lineNo++;
  if(strncmp(strs[3],&petal[i],strlen(strs[3]))) {
     memcpy(line,&lineNo,sizeof(int));
     return INVALID_PETAL_STANZA_DID;
     }
+ i = advanceInterpreter(i,petalSize,petal);
+ if(i < 0)
+ return INVALID_PETAL_SCRIPT;
+ lineNo++;
+ errType = checkStanzaSignature(&petal[i]);
  
- 
- 
- return VALID_PETAL_SCRIPT; 
- 
- } 
- 
- 
+ return errType;
+
+ }
+
+
  int petalHandler(char *petal, int petalSize) {
     int retCode = 0;
     int lineNo = 0;
@@ -76,6 +173,6 @@
        printf("PETAL ERROR: Invalid PETAL script at line %i\n",lineNo);
        break;
        }
- return retCode; 
- 
- } 
+ return retCode;
+
+ }
