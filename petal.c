@@ -279,10 +279,10 @@ return VALID_PETAL_SCRIPT;
  int i = 0;
  int lineNo = 0;
  const char **stanzaList = NULL;
- if(petal[0] == '\n') { 
+ if(petal[0] == 0xa) { 
  i = advanceInterpreter(i,petalSize,petal);
  }
- if(strncmp(strs[0],petal,strlen(strs[0]))) {
+ if(strncmp(strs[0],&petal[i],strlen(strs[0]))) {
     lineNo = 0;
     memcpy(line,&lineNo,sizeof(int)); 
     return INVALID_PETAL_STANZA_VER;
