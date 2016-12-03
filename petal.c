@@ -1,7 +1,11 @@
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
- #include "petal.h"
+#define _GNU_SOURCE 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "petal.h"
+
+ 
+
 
 
  int advanceInterpreter(int i, int petalSize, char *petal) {
@@ -84,9 +88,81 @@ if(canary < 0) {
 return VALID_PETAL_SCRIPT;
 }
 
+int interpretGps(char *petalGps, int *lineNo) { 
+
+printf("Entering interpretGps\n");
+int k,m,localLineNo;
+int i = 0;
+int messageLength = 0;
+int savePoint = 0;
+localLineNo = *lineNo;
+for(k = 0;k < 6;++k) { 
+if(strncmp(&petalGps[i],gpsStanza[k],strlen(gpsStanza[k]))) {
+          memcpy(lineNo,&localLineNo,sizeof(int));
+          return INVALID_PETAL_SCRIPT;
+          }
+printf("k iteration %i\n",k);
+messageLength = 0;
+for(;petalGps[i] != 0xa;++i) {
+}
+switch(k) { 
+case 0:
+if(memmem(&petalGps[savePoint],(i - savePoint),gpsTokens[0],strlen(gpsTokens[0])) == NULL) { 
+memcpy(lineNo,&localLineNo,sizeof(int));
+          return INVALID_PETAL_SCRIPT;
+}
+if(memmem(&petalGps[savePoint],(i - savePoint),gpsTokens[1],strlen(gpsTokens[1])) == NULL) {
+   if(memmem(&petalGps[savePoint],(i - savePoint),gpsTokens[0],strlen(gpsTokens[0])) == NULL) {
+      memcpy(lineNo,&localLineNo,sizeof(int));
+      return INVALID_PETAL_SCRIPT;
+}
+}
+break;
+case 1:
+if(memmem(&petalGps[savePoint],(i - savePoint),gpsTokens[0],strlen(gpsTokens[0])) == NULL) {
+memcpy(lineNo,&localLineNo,sizeof(int));
+          return INVALID_PETAL_SCRIPT;
+}
+if(memmem(&petalGps[savePoint],(i - savePoint),gpsTokens[3],strlen(gpsTokens[3])) == NULL) {
+   if(memmem(&petalGps[savePoint],(i - savePoint),gpsTokens[4],strlen(gpsTokens[4])) == NULL) {
+      memcpy(lineNo,&localLineNo,sizeof(int));
+      return INVALID_PETAL_SCRIPT;
+}
+}
+break;
+case 2:
+if(memmem(&petalGps[savePoint],(i - savePoint),gpsTokens[6],strlen(gpsTokens[6])) == NULL) {
+memcpy(lineNo,&localLineNo,sizeof(int));
+          return INVALID_PETAL_SCRIPT;
+}
+break; 
+case 3:
+if(memmem(&petalGps[savePoint],(i - savePoint),gpsTokens[0],strlen(gpsTokens[0]) - 1) == NULL) {
+memcpy(lineNo,&localLineNo,sizeof(int));
+          return INVALID_PETAL_SCRIPT;
+}
+break;
+case 4:
+if(memmem(&petalGps[savePoint],(i - savePoint),gpsTokens[5],strlen(gpsTokens[5])) == NULL) {
+memcpy(lineNo,&localLineNo,sizeof(int));
+          return INVALID_PETAL_SCRIPT;
+}
+break;
+case 5:
+if(memmem(&petalGps[savePoint],(i - savePoint),gpsTokens[6],strlen(gpsTokens[6])) == NULL) {
+memcpy(lineNo,&localLineNo,sizeof(int));
+          return INVALID_PETAL_SCRIPT;
+}
+break;
+}
+++i;
+localLineNo++;
+savePoint = i; 
+}
 
 
-
+return VALID_PETAL_SCRIPT; 
+}
 
  int checkStanzaSignature(char *petalSignature,int *lineNo) { 
    printf("Entering checkStanzaSignature()\n");
@@ -108,6 +184,7 @@ return VALID_PETAL_SCRIPT;
           if(strncmp(petalSignature,gpsStanza[0],strlen(gpsStanza[0]))) {
           return INVALID_PETAL_SCRIPT;
           }
+          errType = interpretGps(petalSignature,lineNo);
           break;
        default:
           printf("Default case found\n");
@@ -169,6 +246,7 @@ return VALID_PETAL_SCRIPT;
     int retCode = 0;
     int lineNo = 0;
     retCode = petalInterpreter(petal,petalSize,&lineNo);
+    lineNo++;
     switch(retCode) {
        case INVALID_PETAL_STANZA_VER:
        printf("PETAL ERROR: Invalid Version at line %i\n",lineNo);

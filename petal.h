@@ -9,6 +9,15 @@
  static const char *messageStanza[] = {"Message: "}; 
  static const char *statusStanza[] = {"Name: ","HP: ","Type: ","Armor: ","MaxSpeed: "}; 
  static const char *gpsStanza[] = {"Latitude: ","Longitude: ","Altitude: ","Bearing: ","Speed: ","Accuracy: "};  
+ static const char *gpsTokens[] = { 
+  " deg. ",
+  " N",
+  " S", 
+  " W",
+  " E", 
+  "m/s",
+  "m"
+}; 
  static const char *zergCommands[] = {"GET STATUS","GOTO","GET GPS","RESERVED","RETURN","SET GROUP","STOP","REPEAT"};
  
  static const char *zergBreeds[] = {
