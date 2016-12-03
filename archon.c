@@ -80,9 +80,7 @@ Message: %s\n\
     float sp;
     char *name;
     nameLen =(psy->length) - PSYHDRSZ; 
-    printf("Current nameLen %i\n",nameLen);
     nameLen -= 12; 
-    printf("Final nameLen %i\n",nameLen); 
     name = calloc(nameLen + 1,sizeof(char));  
     hp = psy->payload[STAT_HP];
     ac = psy->payload[STAT_AC];
