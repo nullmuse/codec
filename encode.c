@@ -25,6 +25,8 @@
  while(rTok != NULL) {
     if(!strncmp(rTok,"\n\n",2))
     break;
+    if(!strcmp(rTok,"\n"))
+    break;
     if(petalHandler(rTok,strlen(rTok))) {
     free(rFile);
     return 1;

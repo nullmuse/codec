@@ -7,10 +7,8 @@
  #include "zerglib.h"
  #include "pcap.h"
  #include "templar.h"
- 
- 
- 
- static const char *zergBreeds[] = {
+
+static const char *zergBreeds[] = {
     "Overmind",
     "Larva",
     "Cerebrate",
@@ -28,12 +26,11 @@
     "Defiler",
     "Devourer"
     };
- 
- 
- 
- 
- psyData *transmuteHeader(char *pData) {
-    
+
+psyData *
+transmuteHeader(
+char *pData)
+{
     typeVer *tv = calloc(1,sizeof(typeVer)); 
     psyData *psy = calloc(1,sizeof(psyData)); 
     short tVer = 0; 
@@ -48,20 +45,19 @@
     psy->sourceId = htons(pData[OFF_SID]) + ((htons(pData[OFF_SID + 1]) >> 8) & 0xFF);
     psy->destId = htons(pData[OFF_DID]) + ((htons(pData[OFF_DID + 1]) >> 8) & 0xFF);
     psy->payload = &pData[OFF_PAY];
-    free(tv); 
-    return psy; 
-    
-    
-    }
- 
- 
- void readPsyMessage(psyData *psy) { 
-    
-    int messageSize; 
-    char *message; 
-    messageSize = (psy->length) - PSYHDRSZ; 
-    message = calloc(messageSize + 1,sizeof(char)); 
-    memcpy(message,psy->payload,messageSize); 
+    free(tv);
+    return psy;
+}
+
+void
+readPsyMessage(
+psyData *psy)
+{
+    int messageSize;
+    char *message;
+    messageSize = (psy->length) - PSYHDRSZ;
+    message = calloc(messageSize + 1,sizeof(char));
+    memcpy(message,psy->payload,messageSize);
     printf("\
 Version: %i\n\
 Sequence: %i\n\
@@ -69,13 +65,15 @@ From: %i\n\
 To: %i\n\
 Message: %s\n\
 ",psy->version,psy->sequence,psy->sourceId,psy->destId,message);
-    
+
     free(message);
     return;
-    }
- 
- void readPsyStatus(psyData *psy) { 
-    
+}
+
+void
+readPsyStatus(
+psyData *psy)
+{
     int hp,maxHp,type,nameLen;
     int spp = 0;
     char ac;
@@ -89,14 +87,8 @@ Message: %s\n\
     maxHp = psy->payload[STAT_HP_MAX];
     type = psy->payload[STAT_TYPE];
     memcpy(&spp,&psy->payload[STAT_SP],sizeof(int));
-    printf("%i\n",spp);
     spp = byteRitual(spp);
-    printf("%i\n",spp); 
     sp = floatRitual(spp);
-    while(isnan(sp)) { 
-    printf("%f\n",sp);
-    sp = floatRitual(spp);
-    }
     memcpy(name,&psy->payload[STAT_NAME],nameLen);
     printf("\
 Version: %i\n\
@@ -109,15 +101,15 @@ Type: %s\n\
 Armor: %i\n\
 MaxSpeed: %fm/s\n\
 ",psy->version,psy->sequence,psy->sourceId,psy->destId,name,hp,maxHp,zergBreeds[type],ac,sp);
-    
-    
+
     free(name);
-    return; 
-    
-    } 
- 
- void readPsyCommand(psyData *psy) { 
-    
+    return;
+}
+
+void
+readPsyCommand(
+psyData *psy)
+{
     int command; 
     int repseq; 
     float bearFloat;
@@ -126,25 +118,26 @@ MaxSpeed: %fm/s\n\
     signed int groupId;
     short isAdd;  
     char *addRemove[] = {"Remove from","Add to"};
- command = psy->payload[COMM_TYPE];
- switch(command) { 
-    
-    case GET_STATUS:
-    printf("\
+    command = psy->payload[COMM_TYPE];
+    switch(command)
+    {
+        case GET_STATUS:
+            printf("\
 Version: %i\n\
 Sequence: %i\n\
 From: %i\n\
 To: %i\n\
 GET STATUS\n\
 ",psy->version,psy->sequence,psy->sourceId,psy->destId); 
-       break; 
-    case GOTO:
-    memcpy(&bearInt,&psy->payload[COMM_PARAM2],sizeof(int)); 
-    bearInt = byteRitual(bearInt); 
-    bearFloat = floatRitual(bearInt); 
-    memcpy(&meters,&psy->payload[COMM_PARAM1],sizeof(short));
-    meters = ntohs(meters); 
-    printf("\
+            break;
+
+        case GOTO:
+            memcpy(&bearInt,&psy->payload[COMM_PARAM2],sizeof(int)); 
+            bearInt = byteRitual(bearInt); 
+            bearFloat = floatRitual(bearInt); 
+            memcpy(&meters,&psy->payload[COMM_PARAM1],sizeof(short));
+            meters = ntohs(meters); 
+            printf("\
 Version: %i\n\
 Sequence: %i\n\
 From: %i\n\
@@ -153,41 +146,45 @@ GOTO\n\
 Orient to Bearing: %f\n\
 Distance: %i meters\n\
 ",psy->version,psy->sequence,psy->sourceId,psy->destId,bearFloat,meters);
-    
-       break; 
-    case GET_GPS:
-    printf("\
+
+            break; 
+
+        case GET_GPS:
+            printf("\
 Version: %i\n\
 Sequence: %i\n\
 From: %i\n\
 To: %i\n\
 GET GPS\n\
 ",psy->version,psy->sequence,psy->sourceId,psy->destId);
-       break; 
-    case RESERVED:
-    printf("\
+            break; 
+
+        case RESERVED:
+            printf("\
 Version: %i\n\
 Sequence: %i\n\
 From: %i\n\
 To: %i\n\
 RESERVED\n\
 ",psy->version,psy->sequence,psy->sourceId,psy->destId);
-       break;
-    case RETURN:
-    printf("\
+            break;
+
+        case RETURN:
+            printf("\
 Version: %i\n\
 Sequence: %i\n\
 From: %i\n\
 To: %i\n\
 RETURN\n\
 ",psy->version,psy->sequence,psy->sourceId,psy->destId);
-       break; 
-    case SET_GROUP:
-    memcpy(&groupId,&psy->payload[COMM_PARAM2],sizeof(int)); 
-    memcpy(&isAdd,&psy->payload[COMM_PARAM1],sizeof(short));
-    isAdd = htons(isAdd); 
-    groupId = byteRitual(groupId); 
-    printf("\
+            break; 
+
+        case SET_GROUP:
+            memcpy(&groupId,&psy->payload[COMM_PARAM2],sizeof(int)); 
+            memcpy(&isAdd,&psy->payload[COMM_PARAM1],sizeof(short));
+            isAdd = htons(isAdd); 
+            groupId = byteRitual(groupId); 
+            printf("\
 Version: %i\n\
 Sequence: %i\n\
 From: %i\n\
@@ -196,20 +193,22 @@ SET GROUP\n\
 %s Group ID: %i\n\
 ",psy->version,psy->sequence,psy->sourceId,psy->destId,addRemove[isAdd],groupId);
     
-       break; 
-    case STOP:
-    printf("\
+            break;
+
+        case STOP:
+            printf("\
 Version: %i\n\
 Sequence: %i\n\
 From: %i\n\
 To: %i\n\
 STOP\n\
 ",psy->version,psy->sequence,psy->sourceId,psy->destId);
-       break;
-    case REPEAT:
-    memcpy(&repseq,&psy->payload[COMM_PARAM2],sizeof(int));
-    repseq = byteRitual(repseq); 
-    printf("\
+            break;
+
+        case REPEAT:
+            memcpy(&repseq,&psy->payload[COMM_PARAM2],sizeof(int));
+            repseq = byteRitual(repseq); 
+            printf("\
 Version: %i\n\
 Sequence: %i\n\
 From: %i\n\
@@ -217,10 +216,11 @@ To: %i\n\
 REPEAT\n\
 Repeat Sequence: %i\n\
 ",psy->version,psy->sequence,psy->sourceId,psy->destId,repseq);
-       break;
-    default:
-       printf("Unrecognized command in command packet\n"); 
-       break; 
+            break;
+
+        default:
+           printf("Unrecognized command in command packet\n"); 
+           break; 
     }
  
  
@@ -233,7 +233,10 @@ Repeat Sequence: %i\n\
  
  
  
- void readPsyGps(psyData *psy) { 
+void
+readPsyGps(
+psyData *psy)
+{
     char ns,we; 
     double fLat,fLong;
     float fAlt,fBear,fSp,fAc;
@@ -258,22 +261,26 @@ Repeat Sequence: %i\n\
     fSp = floatRitual(iSp); 
     fAc = floatRitual(iAc);  
     fAlt = fAlt * FATHOM_METERS; 
-    if(fLong < 0.0) { 
-       we = 'W';
-       fLong *= -1; 
-       }
- else if(fLong >= 0.0) {
-    we = 'E'; 
+    if(fLong < 0.0)
+    { 
+        we = 'W';
+        fLong *= -1; 
     }
- if(fLat < 0.0) { 
-    ns = 'S';
-    fLat *= -1; 
+    else if(fLong >= 0.0)
+    {
+        we = 'E'; 
     }
- else if(fLat >= 0.0) { 
-    ns = 'N'; 
+    if(fLat < 0.0)
+    {
+        ns = 'S';
+        fLat *= -1; 
+    }
+    else if(fLat >= 0.0)
+    {
+        ns = 'N'; 
     }
  
- printf("\
+    printf("\
 Version: %i\n\
 Sequence: %i\n\
 From: %i\n\
@@ -288,37 +295,17 @@ Accuracy: %.0fm\n\
  
  
  
- return; 
+    return; 
  
- } 
+} 
  
- /*
- int psionicDivagate(char *stream, int streamsize, psyData **psylist) {
-    
-    int i,psyCount;
-    char *tokPtr;
-    
-    
-    tokPtr = calloc(HEADERSIZE + 1,sizeof(char));
-    psyCount = 0;
-    for(i = 0; i < streamSize; ++i) {
-       memcpy(tokPtr,(stream + i),sizeof(int));
-       if(!strncmp(tokPtr,psychicheader,HEADERSIZE)) {
-          if(psyCount == 0) {
-             psyList[psyCount] = transmuteheader((stream + i));
-             psyCount++;
-             }
- else if(*psyList != NULL) {
-    psyList = realloc(psylist,sizeof(psyData *)); 
-    psyList[psyCount] = transmuteheader(stream + i);
-    psyCount++;
-    }
- }
- }
- return psyCount;
- }
- */
-  psyData **psionicDivagate(char *stream, int streamSize, int *psyPtr) {
+
+psyData **
+psionicDivagate(
+char *stream,
+int streamSize,
+int *psyPtr)
+{
     int psyCount,i;
     char *pPoint;
     psyData **psyList;
@@ -328,29 +315,33 @@ Accuracy: %.0fm\n\
     pPoint = stream + OFF_EPOCH; 
     psyCount = 0;
     long max = (long) stream + streamSize; 
-    while((long)pPoint < max) {
-       packetLength = *(pPoint + 8);
-       pPoint += 16; 
-       if(psyCount == 0) {
-          psyList = calloc(psyCount + 1,sizeof(psyData *));
-          headerPointer = transmuteHeader(pPoint);
-          memcpy(&psyList[psyCount],&headerPointer,sizeof(psyData *)); 
-          psyCount++; 
-          }
- else {
-    psyTemp = calloc(psyCount + 1,sizeof(psyData *));
-    for(i = 0;i < psyCount;i++) { 
-       memcpy(&psyTemp[i],&psyList[i],sizeof(psyData *));
-       }
- free(psyList);
- psyList = psyTemp;
- headerPointer = transmuteHeader(pPoint);
- memcpy(&psyList[psyCount],&headerPointer,sizeof(char *));
- psyCount++;
- }
+    while((long)pPoint < max)
+    {
+        packetLength = *(pPoint + 8);
+        pPoint += 16; 
+        if(psyCount == 0)
+        {
+            psyList = calloc(psyCount + 1,sizeof(psyData *));
+            headerPointer = transmuteHeader(pPoint);
+            memcpy(&psyList[psyCount],&headerPointer,sizeof(psyData *)); 
+            psyCount++; 
+        }
+        else
+        {
+            psyTemp = calloc(psyCount + 1,sizeof(psyData *));
+            for(i = 0;i < psyCount;i++)
+            {
+                memcpy(&psyTemp[i],&psyList[i],sizeof(psyData *));
+            }
+        free(psyList);
+        psyList = psyTemp;
+        headerPointer = transmuteHeader(pPoint);
+        memcpy(&psyList[psyCount],&headerPointer,sizeof(char *));
+        psyCount++;
+        }
  
- pPoint += packetLength; 
- }
- memcpy(psyPtr,&psyCount,sizeof(int)); 
- return psyList; 
- }
+        pPoint += packetLength; 
+    }
+    memcpy(psyPtr,&psyCount,sizeof(int)); 
+    return psyList; 
+}
