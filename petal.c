@@ -16,6 +16,7 @@
 
 int interpretMessage(char *petalMessage) { 
  int i;
+ printf("Entering interpretMessage\n");
  int messageLength = 0;
  i = strlen(messageStanza[0]); 
  for(;petalMessage[i] != 0xa;++i) {
@@ -60,8 +61,12 @@ if(!strncmp(&petalStatus[i],"m/s",3)) {
 canary = 0; 
 } 
 
-messageLength++;
+
 }
+}
+if(petalStatus[(i - 1)] == ' ') { 
+memcpy(lineNo,&localLineNo,sizeof(int));
+return INVALID_PETAL_SCRIPT;
 }
 ++i;
 localLineNo++;
@@ -154,7 +159,7 @@ return VALID_PETAL_SCRIPT;
  return INVALID_PETAL_SCRIPT;
  lineNo++;
  errType = checkStanzaSignature(&petal[i],&lineNo);
- 
+ memcpy(line,&lineNo,sizeof(int));
  return errType;
 
  }
