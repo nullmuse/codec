@@ -1,6 +1,6 @@
 CFLAGS = -Wall -Wextra -pedantic -std=c99
 D_OBJS = decode.o cfile.o archon.o templar.o
-E_OBJS = encode.o dragoon.o cfile.o arbiter.o templar.o
+E_OBJS = encode.o dragoon.o cfile.o arbiter.o templar.o petal.o
 all: decode encode
 
 decode: $(D_OBJS)
