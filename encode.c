@@ -23,7 +23,7 @@
  rFile = readFile(argv[1],0);
  rTok = strtok(rFile, "\t");
  while(rTok != NULL) {
-    if(!strcmp(rTok,"\n"))
+    if(!strncmp(rTok,"\n\n",2))
     break;
     if(petalHandler(rTok,strlen(rTok))) {
     free(rFile);

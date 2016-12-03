@@ -1,5 +1,6 @@
  #include <stdio.h>
  #include <stdlib.h>
+ #include <math.h>
  #include <string.h>
  #include <sys/stat.h>
  #include <arpa/inet.h>
@@ -75,7 +76,8 @@ Message: %s\n\
  
  void readPsyStatus(psyData *psy) { 
     
-    int hp,maxHp,type,spp,nameLen;
+    int hp,maxHp,type,nameLen;
+    int spp = 0;
     char ac;
     float sp;
     char *name;
@@ -87,8 +89,14 @@ Message: %s\n\
     maxHp = psy->payload[STAT_HP_MAX];
     type = psy->payload[STAT_TYPE];
     memcpy(&spp,&psy->payload[STAT_SP],sizeof(int));
-    spp = byteRitual(spp); 
+    printf("%i\n",spp);
+    spp = byteRitual(spp);
+    printf("%i\n",spp); 
     sp = floatRitual(spp);
+    while(isnan(sp)) { 
+    printf("%f\n",sp);
+    sp = floatRitual(spp);
+    }
     memcpy(name,&psy->payload[STAT_NAME],nameLen);
     printf("\
 Version: %i\n\

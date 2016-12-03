@@ -20,6 +20,7 @@ float floatRitual(int object) {
 //Below is to make compiler happy
 object = object;
 __asm__(".intel_syntax noprefix");
+__asm__("finit");
 __asm__("fld DWORD PTR [rbp-0x4]");
 __asm__("fst DWORD PTR [rbp-0x32]");
 __asm__("movd xmm0, DWORD PTR [rbp-0x32]");
@@ -34,6 +35,7 @@ double doubleRitual(unsigned long object) {
 //Below is to make compiler happy
 object = object;
 __asm__(".intel_syntax noprefix");
+__asm__("finit");
 __asm__("fld QWORD PTR [rbp-0x8]");
 __asm__("fst QWORD PTR [rbp-0x64]");
 __asm__("movq xmm0, QWORD PTR [rbp-0x64]");
