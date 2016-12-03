@@ -275,15 +275,19 @@ return VALID_PETAL_SCRIPT;
 
  int petalInterpreter(char *petal, int petalSize,int *line) { 
  int errType = 0;
- char *strs[] = {"Version: ","Sequence: ","From: ","To: "};
+ char *strs[] = {"Version: 1","Sequence: ","From: ","To: "};
  int i = 0;
  int lineNo = 0;
  const char **stanzaList = NULL;
+ if(petal[0] == '\n') { 
+ i = advanceInterpreter(i,petalSize,petal);
+ }
  if(strncmp(strs[0],petal,strlen(strs[0]))) {
     lineNo = 0;
     memcpy(line,&lineNo,sizeof(int)); 
     return INVALID_PETAL_STANZA_VER;
     }
+  
  i = advanceInterpreter(i,petalSize,petal);
  if(i < 0)
  return INVALID_PETAL_SCRIPT;

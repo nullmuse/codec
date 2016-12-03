@@ -29,6 +29,10 @@
  while(rTok != NULL) {
     if(!strcmp(rTok,"\n"))
     break;
+    if(petalHandler(rTok,strlen(rTok))) {
+    free(rFile);
+    return 1;
+    }
     pcapHeader = pcapBuildInit();
     pcapBuildHeader(pcapHeader,0); 
     pcapBuildEth(pcapHeader); 
