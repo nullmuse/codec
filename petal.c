@@ -200,10 +200,6 @@ memcpy(lineNo,&localLineNo,sizeof(int));
 
 break;
 case 5:
-for(;petalCommand[i] != 0xa;++i) {
-}
-i++;
-localLineNo++;
 if(strncmp(&petalCommand[i],commandTokens[3],strlen(commandTokens[3]))) {
 if(strncmp(&petalCommand[i],commandTokens[4],strlen(commandTokens[4]))) {
 memcpy(lineNo,&localLineNo,sizeof(int));
@@ -218,10 +214,6 @@ memcpy(lineNo,&localLineNo,sizeof(int));
 }
 break;
 case 7:
-for(;petalCommand[i] != 0xa;++i) {
-}
-i++;
-localLineNo++;
 if(strncmp(&petalCommand[i],commandTokens[5],strlen(commandTokens[5]))) {
 memcpy(lineNo,&localLineNo,sizeof(int));
       return INVALID_PETAL_SCRIPT;
