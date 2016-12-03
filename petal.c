@@ -26,18 +26,25 @@ int interpretMessage(char *petalMessage) {
  return VALID_PETAL_SCRIPT;
  }
 int interpretStatus(char *petalStatus, int *lineNo) {
+printf("Entering interpretStatus\n");
 int k,m,localLineNo;
 int i = 0;
 int messageLength = 0;
 localLineNo = *lineNo;
 int canary;
 for(k = 0;k < 5;++k) {
+if(strncmp(&petalStatus[i],statusStanza[k],strlen(statusStanza[k]))) {
+          memcpy(lineNo,&localLineNo,sizeof(int));
+          return INVALID_PETAL_SCRIPT;
+          }
+printf("k iteration %i\n",k); 
 canary = 0;
 if(k == 1 || k == 2 || k == 4) {
 canary = -1;
 }
 messageLength = 0;
 for(;petalStatus[i] != 0xa;++i) {
+printf("rolling %c %x\n",petalStatus[i],petalStatus[i]);
 if(k == 1 && petalStatus[i] == '/') {
 canary = 0;
 }
@@ -58,10 +65,6 @@ messageLength++;
 }
 ++i;
 localLineNo++;
-if(strncmp(&petalStatus[i],statusStanza[k],strlen(statusStanza[k]))) {
-          memcpy(lineNo,&localLineNo,sizeof(int));
-          return INVALID_PETAL_SCRIPT;
-          }
 if(messageLength - strlen(statusStanza[k]) == 0) {
           localLineNo--;
           memcpy(lineNo,&localLineNo,sizeof(int));
@@ -80,17 +83,21 @@ return VALID_PETAL_SCRIPT;
 
 
 
- int checkStanzaSignature(char *petalSignature) { 
+ int checkStanzaSignature(char *petalSignature,int *lineNo) { 
+   printf("Entering checkStanzaSignature()\n");
+   int errType = 0;
     switch(petalSignature[0]) { 
        case 'M':
           if(strncmp(petalSignature,messageStanza[0],strlen(messageStanza[0]))) {
           return INVALID_PETAL_SCRIPT;
           }
+          errType = interpretMessage(petalSignature);
           break;
        case 'N':
           if(strncmp(petalSignature,statusStanza[0],strlen(statusStanza[0]))) {
           return INVALID_PETAL_SCRIPT;
           }
+          errType = interpretStatus(petalSignature,lineNo);
           break;
        case 'L':
           if(strncmp(petalSignature,gpsStanza[0],strlen(gpsStanza[0]))) {
@@ -98,12 +105,13 @@ return VALID_PETAL_SCRIPT;
           }
           break;
        default:
+          printf("Default case found\n");
           if(strncmp(petalSignature,zergCommands[0],strlen(zergCommands[0]))) {
           return INVALID_PETAL_SCRIPT;
           }
           break;
     }
-    return VALID_PETAL_SCRIPT;
+    return errType;
 }
 
  int petalInterpreter(char *petal, int petalSize,int *line) { 
@@ -145,7 +153,7 @@ return VALID_PETAL_SCRIPT;
  if(i < 0)
  return INVALID_PETAL_SCRIPT;
  lineNo++;
- errType = checkStanzaSignature(&petal[i]);
+ errType = checkStanzaSignature(&petal[i],&lineNo);
  
  return errType;
 
