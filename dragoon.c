@@ -8,31 +8,28 @@
  #include <unistd.h> 
  #include "pcap.h"
  #include "codelib.h"
- 
- 
- char *pcapBuildInit(void) { 
+
+char *
+pcapBuildInit(void)
+{
     char *pcapHeader = calloc(PCAP_SIZE, sizeof(char));
     struct pcapHeaderF fileHeader; 
-    
     fileHeader.majorVersion = MJ_VER;
     fileHeader.minorVersion = MN_VER; 
     fileHeader.gmtOffset = 0; 
     fileHeader.accDelta = 0; 
     fileHeader.maxLen = 65536; 
     fileHeader.linkType = 1; 
-     
-    
     memcpy(pcapHeader,psychicHeader,HEADER_SIZE); 
-    
     memcpy((pcapHeader + OFF_MJ_VER),&fileHeader,sizeof(struct pcapHeaderF)); 
-    
-    return pcapHeader; 
-    
-    } 
- 
- 
- void pcapBuildHeader(char *pcapData, int pcapSize) { 
-    
+    return pcapHeader;
+}
+
+void 
+pcapBuildHeader(
+char *pcapData,
+int pcapSize)
+{
     struct pcapHeaderP pHeader; 
     struct timeval tv; 
     gettimeofday(&tv,NULL); 
@@ -41,13 +38,15 @@
     pHeader.dataLen = pcapSize + ETH_SIZE + IP_SIZE + UDP_SIZE; 
     pHeader.packetLen = pcapSize + ETH_SIZE + IP_SIZE + UDP_SIZE;
     memcpy((pcapData + OFF_EPOCH),&pHeader,sizeof(struct pcapHeaderP));
-    
     return; 
     
-    }
+}
  
  
- void pcapBuildEth(char *pcapData) { 
+void 
+pcapBuildEth(
+char *pcapData)
+{ 
     
     struct ethFrame ethernet; 
     memcpy(ethernet.destMac,"000000",6); 
@@ -57,10 +56,12 @@
     
     return; 
     
-    }
+}
  
- void pcapBuildIph(char *pcapData) { 
-    
+void
+pcapBuildIph(
+char *pcapData)
+{
     struct ip4Header ipHeader; 
     int datLen; 
     memcpy(&datLen,(pcapData + OFF_EPOCH  + 8),sizeof(int)); 
@@ -76,16 +77,14 @@
     ipHeader.checksum = 0; 
     ipHeader.srcIp = 12345678; 
     ipHeader.destIp = 87654321; 
-     
-    
     memcpy((pcapData + OFF_IP),&ipHeader,sizeof(struct ip4Header));
-    
     return; 
-    
-    }
+}
  
- void pcapBuildUdp(char *pcapData) { 
-    
+void
+pcapBuildUdp(
+char *pcapData)
+{ 
     struct udpHeader udpHead; 
     int datLen;
     memcpy(&datLen,(pcapData + OFF_EPOCH  + 8),sizeof(int));
@@ -93,9 +92,8 @@
     udpHead.destPort = UDP_PORT; 
     udpHead.len = datLen - ETH_SIZE - IP_SIZE; 
     udpHead.checksum = 0; 
-    
     memcpy((pcapData + OFF_UDP),&udpHead,sizeof(struct udpHeader));
     
     return; 
-    }
+}
  
