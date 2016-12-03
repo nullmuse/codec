@@ -152,7 +152,7 @@ Repeat Command Payload Format:
 .PP
 PETAL supports multiple packet stanzas. All packet stanzas are delimited by a tab character on its own line.
 .PP
-The PETAL standard utilizes colons, spaces, and tab characters as grammar. As such, it is dependent on their format to derive meaning.
+The PETAL interpreter utilizes a strict lexicon when parsing scripts. As such, it is dependent on this lexicon to derive meaning.
 It is crucial to exercise discipline in the formatting of your PETAL scripts. While many incorrectly formatted scripts result in encoding errors,
 it is possible to encode a psionic transmission that does not have the intended message.
 .SH PETAL SCRIPT EXAMPLES
@@ -215,41 +215,6 @@ MaxSpeed: 6.100000m/s
 .fi
 .PP
 .B The location packet of an arbitrary zerg unit.
-.B This entry purposely includes a mis-spelled value, Long_misspelled, to illustrate the robustness of PETAL's parsing system.
-.B While the placement of certain symbols, like colons and spaces, require strict adherence to PETAL syntax structure, PETAL locates key/value pairs based on single character
-.B identifiers, such as the L in Latitude, or the newline separating the Latitude key/value pair from the Longitude key/value pair.
-.PP
-.B The following three examples are syntactic equivalents:
-.PP
-.nf
-.RS
-Version: 1
-Sequence: 22
-From: 400
-To: 7617
-Latitude: 55.32 deg. S
-Long_misspelled: 12.5 deg. W
-Altitude: 1m
-Bearing: 9 deg.
-Speed: 30m/s
-Accuracy: 2m
-.RE
-.fi
-.PP
-.nf
-.RS
-Version: 1
-Sequence: 22
-From: 400
-To: 7617
-Latitude: 55.32 deg. S
-NotLong: 12.5 deg. W
-Altitude: 1m
-Bearing: 9 deg.
-Speed: 30m/s
-Accuracy: 2m
-.RE
-.fi
 .PP
 .nf
 .RS
@@ -267,10 +232,8 @@ Accuracy: 2m
 .nf
 .RS
 .PP
-.B The preceding two examples will produce the third example upon decoding the PCAP file. This means PETAL is resilient to typographical errors made by researchers who write PETAL scripts.
-.B While this robustness can be actively taken advantage of, it is discouraged for the purposes of readability and minimizing unforseen mistakes, and should be regarded as a safety measure.
-.PP
-\fIADVISORY:\fR \fBENCODED PCAPS ARE PSI\-EMITTER COMPLIANT, AND CAN BE TRANSMITTED INTO PSIONIC AND EMPATHIC COMMUNICATION STREAMS. THE INJECTION OR REPLAY OF PSIONIC CAPTURE FILES IS RESTRICTED,\fR
-.B AND REQUIRES THE APPROVAL OF BOTH THE HEAD OF PSIONIC OPERATIONS AND THE PSI-INFORMATICS RESEARCH COMMITEE.
+\fIADVISORY:\fR \fBENCODED PCAPS ARE PSI\-EMITTER COMPLIANT, AND CAN BE TRANSMITTED INTO PSIONIC AND EMPATHIC COMMUNICATION STREAMS.\fR
+.B THE INJECTION OR REPLAY OF PSIONIC CAPTURE FILES IS RESTRICTED,
+.B AND REQUIRES THE APPROVAL OF BOTH THE HEAD OF PSIONIC OPERATIONS AND THE PSI-INFORMATICS RESEARCH COMMITTEE.
 .B VIOLATION OF THIS PROCEDURE IS TANTAMOUNT TO RECKLESS ENDANGERMENT ON A PLANETARY SCALE.
 
